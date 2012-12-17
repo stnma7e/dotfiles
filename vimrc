@@ -42,3 +42,6 @@ endif
 
 " set colorscheme
 colorscheme dasch
+
+" open tagbar
+nmap <F8> :TagbarToggle<CR>
