@@ -37,3 +37,6 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
+
+alias ls='ls -Fsbh --color=always'
+alias grep='grep --color=always'
