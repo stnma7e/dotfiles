@@ -5,7 +5,7 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="scim"
+ZSH_THEME="juanghurtado"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -40,3 +40,9 @@ source $ZSH/oh-my-zsh.sh
 
 alias ls='ls -Fsbh --color=always'
 alias grep='grep --color=always'
+alias rm='rm -i'
+
+PATH=$PATH:~/bin
+
+source zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
