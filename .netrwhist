@@ -1,4 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =7
 let g:netrw_dirhist_1='/etc/ld.so.conf.d'
 let g:netrw_dirhist_2='/home/sam/.cache/0install.net/implementations/sha256=7d7d2442b90c58b6f4c54d460438ea0ef9c58786119e32f211a050296583d15a'
+let g:netrw_dirhist_3='/home/sam/.zsh'
+let g:netrw_dirhist_4='/home/sam/Copy/prog/haskell/json'
+let g:netrw_dirhist_5='/etc/systemd'
+let g:netrw_dirhist_6='/etc/systemd/ntp-units.d'
+let g:netrw_dirhist_7='/home/sam/.config/openbox'
