@@ -50,13 +50,18 @@ set smartcase			 " Do smart case matching
 set incsearch     		 " Incremental search
 set hlsearch 			 " Highlight matches
 
+set ignorecase        		 " Do case insensitive matching
+set smartcase			 " Do smart case matching
+set incsearch     	         " Incremental search
+set hlsearch 			 " Highlight matches
+
 set autowrite        		 " Automatically save before commands like :next and :make
 
 set hidden            		 " Hide buffers when they are abandoned
 set autoread	      		 " watch for file changes
 
 set tabstop=8
-set softtabstop=8 		 " Tabs are 2 spaces long
+set softtabstop=8 		 " Tabs are 8 spaces long
 set shiftwidth=8
 "set expandtab 			 " Convert tabs to spaces
 
@@ -78,10 +83,11 @@ if has("gui_running")
 endif
 
 set showcmd           		 " Show (partial) command in status line.
-set ruler 					 " Show location in file
-set number 					 " Show line numbers
+set ruler 			 " Show location in file
+set number 			 " Show line numbers
 set showmatch         		 " Show matching brackets.
-set mousehide 				 " Don't show mouse while typing
-set antialias 				 " Antialias fonts
+set mousehide 			 " Don't show mouse while typing
+set antialias 			 " Antialias fonts
 set wildmenu
 set wildmode=longest,list,full
+
