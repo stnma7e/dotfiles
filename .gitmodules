@@ -16,9 +16,6 @@
 [submodule "bundle/tagbar"]
 	path = bundle/tagbar
 	url = https://github.com/majutsushi/tagbar.git
-[submodule "bundle/TagHighlight"]
-	path = bundle/TagHighlight
-	url = https://github.com/abudden/TagHighlight.git
 [submodule "bundle/colorschemes"]
 	path = bundle/colorschemes
 	url = git@github.com:flazz/vim-colorschemes.git
@@ -31,3 +28,6 @@
 [submodule "bundle/vim-glsl"]
 	path = bundle/vim-glsl
 	url = https://github.com/tikhomirov/vim-glsl
+[submodule "bundle/nerdcommenter"]
+	path = bundle/nerdcommenter
+	url = https://github.com/scrooloose/nerdcommenter

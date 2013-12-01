@@ -12,6 +12,7 @@ endif
 
 " plugin keybindings
 noremap <F8> :TagbarToggle<CR>
+nmap <F3> :NERDTreeToggle<CR>
 
 " personal custom commands
 :command NScim !ninja -C ~/scim/build
@@ -80,6 +81,7 @@ set background=dark
 
 if has("gui_running")
   set guifont=Inconsolata-g\ 8
+  set lines=50 columns=125
 endif
 
 set showcmd           		 " Show (partial) command in status line.
@@ -98,4 +100,6 @@ filetype off
 filetype plugin indent off
 set runtimepath+=$GOROOT/misc/vim
 filetype plugin indent on
-syntax on
+
+" Automatically format go code when saving
+au FileType go au BufWritePre <buffer> Fmt
