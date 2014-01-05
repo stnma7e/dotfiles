@@ -45,18 +45,11 @@ endif
 let c_space_errors = 1
 set nocompatible 		 " Use Vim settings instead of vi
 set ai 				 " Autoindent
-
-set ignorecase        		 " Do case insensitive matching
-set smartcase			 " Do smart case matching
-set incsearch     		 " Incremental search
-set hlsearch 			 " Highlight matches
+set backspace=indent,eol,start
 
 set ignorecase        		 " Do case insensitive matching
 set smartcase			 " Do smart case matching
 set incsearch     	         " Incremental search
-set hlsearch 			 " Highlight matches
-
-set autowrite        		 " Automatically save before commands like :next and :make
 
 set hidden            		 " Hide buffers when they are abandoned
 set autoread	      		 " watch for file changes
@@ -67,12 +60,25 @@ set shiftwidth=8
 "set expandtab 			 " Convert tabs to spaces
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Interface settings
+" Go language options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" highlight current line
-" set cul
-" hi CursorLine term=none cterm=none ctermbg=0
+" Clear filetype flags before changing runtimepath to force Vim to reload them
+filetype off
+filetype plugin indent off
+
+set runtimepath+=/usr/share/go/misc/vim
+filetype plugin indent on
+
+au FileType go au BufWritePre <buffer> Fmt  " Automatically format go code when saving
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" UI settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Highlight current line
+"set cul
+"hi CursorLine term=none cterm=none ctermbg=0
 
 :set t_Co=256 				 " 256 color palletes
 " colorscheme bensday
@@ -87,19 +93,10 @@ endif
 set showcmd           		 " Show (partial) command in status line.
 set ruler 			 " Show location in file
 set number 			 " Show line numbers
+"set hlsearch 			 " Highlight matches
 set showmatch         		 " Show matching brackets.
 set mousehide 			 " Don't show mouse while typing
 set antialias 			 " Antialias fonts
 set wildmenu
 set wildmode=longest,list,full
 
-" Go language options
-" Some Linux distributions set filetype in /etc/vimrc.
-" Clear filetype flags before changing runtimepath to force Vim to reload them.
-filetype off
-filetype plugin indent off
-set runtimepath+=$GOROOT/misc/vim
-filetype plugin indent on
-
-" Automatically format go code when saving
-au FileType go au BufWritePre <buffer> Fmt
