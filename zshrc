@@ -5,7 +5,8 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="juanghurtado"
+#ZSH_THEME="juanghurtado"
+ZSH_THEME="mortalscumbag"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -35,6 +36,7 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
+source ~/.zsh/cb.sh
 
 # Customize to your needs...
 
@@ -44,12 +46,19 @@ alias rm='rm -i'
 alias remake='make clean; make'
 alias time=/usr/bin/time
 
-PATH=~/bin:$PATH
+#PATH=~/bin:$PATH
+PATH=~/.usr/bin:$PATH
+PATH=~/.usr/pacman/bin:$PATH
 PATH=~/j64-701/bin:$PATH
-GOPATH=~/go
+PATH=~/go/bin:$PATH
+PATH=~/go/go_appengine:$PATH
 export LIBGL_DEBUG=verbose
 export MESA_DEBUG
+export GOPATH=~/go
 
+# ################################
+# Bookmarking
+# ################################
 export MARKPATH=$HOME/.marks
 function jump { 
   cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
@@ -63,6 +72,7 @@ function unmark {
 function marks {
   ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
 }
+# ################################
 
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
