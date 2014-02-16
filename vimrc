@@ -8,6 +8,8 @@ if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
 
+au Bufenter *.hs compiler ghc
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Keybindings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -56,10 +58,11 @@ set incsearch     	         " Incremental search
 set hidden            		 " Hide buffers when they are abandoned
 set autoread	      		 " watch for file changes
 
-set tabstop=8
-set softtabstop=8 		 " Tabs are 8 spaces long
-set shiftwidth=8
-"set expandtab 			 " Convert tabs to spaces
+set tabstop=4
+set shiftwidth=4
+set expandtab 			 " Convert tabs to spaces
+
+let g:haddock_browser = "/usr/bin/firefox"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Go language options
@@ -101,4 +104,3 @@ set mousehide 			 " Don't show mouse while typing
 set antialias 			 " Antialias fonts
 set wildmenu
 set wildmode=longest,list,full
-
