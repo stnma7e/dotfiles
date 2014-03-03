@@ -6,7 +6,10 @@ ZSH=$HOME/.oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 #ZSH_THEME="juanghurtado"
-ZSH_THEME="mortalscumbag"
+#ZSH_THEME="mortalscumbag"
+#ZSH_THEME="trapd00r"
+ZSH_THEME="sunrise"
+#ZSH_THEME="bureau"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -45,16 +48,15 @@ alias grep='grep --color=always'
 alias rm='rm -i'
 alias remake='make clean; make'
 alias time=/usr/bin/time
+alias clock="~/bin/clock ~/.punchcard"
 
 #PATH=~/bin:$PATH
+PATH=~/.cabal/bin:$PATH
 PATH=~/.usr/bin:$PATH
-PATH=~/.usr/pacman/bin:$PATH
-PATH=~/j64-701/bin:$PATH
-PATH=~/go/bin:$PATH
-PATH=~/go/go_appengine:$PATH
+PATH=~/programs/go_appengine:$PATH
 export LIBGL_DEBUG=verbose
 export MESA_DEBUG
-export GOPATH=~/go
+export GOPATH=~
 
 # ################################
 # Bookmarking
@@ -76,4 +78,4 @@ function marks {
 
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-command fortune
+command fortune -ae
