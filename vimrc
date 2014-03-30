@@ -87,7 +87,8 @@ au FileType go au BufWritePre <buffer> Fmt  " Automatically format go code when 
 
 :set t_Co=256 				 " 256 color palletes
 " colorscheme bensday
-colorscheme desertEx
+" colorscheme desertEx
+colorscheme ChocolatePapaya
 set background=dark
 
 if has("gui_running")
