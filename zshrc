@@ -36,31 +36,63 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+plugins=(git git-extras mercurial archlinux cabal common-aliases battery)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.zsh/cb.sh
 
 # Customize to your needs...
 
+export TERM=xterm-256color
+export SSH_AUTH_SOCK=0
+
 alias ls='ls -Fsbh --color=always'
-alias grep='grep --color=always'
-alias rm='rm -i'
+#alias rm='rm -i'
+alias rm='gio trash'
 alias remake='make clean; make'
 alias time=/usr/bin/time
 alias clock="~/bin/clock ~/.punchcard"
 
-#PATH=~/bin:$PATH
 PATH=~/.cabal/bin:$PATH
+PATH=~/.cargo/bin:$PATH
 PATH=~/.usr/bin:$PATH
-PATH=~/programs/go_appengine:$PATH
+PATH=~/.usr/local/bin:$PATH
+PATH=~/.usr/bin/cargo:$PATH
+PATH=/opt/matlab/bin:$PATH
+#PATH=/home/sam/.usr/programs/miniconda/bin:$PATH
+PATH=~/programs/android/android-studio/bin:$PATH
+
 export LIBGL_DEBUG=verbose
 export MESA_DEBUG
 export GOPATH=~
+#export RUST_SRC_PATH=~/src/rust/src
+export RUST_SRC_PATH=~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src
+export RUST_BACKTRACE=1
+
+# ##################################
+# RESEARCH
+#
+
+export por=/home/sam/school/chem/mcdaniel/supercapacitor/porous
+
+#
+# #################################
+
+# ##################################
+# SCHOOL
+#
+
+export CLASSPATH=.:/home/sam/school/csc/1332\ hudachek-buswell/junit.jar:/home/sam/school/csc/1332\ hudachek-buswell/hamcrest-core.jar
+
+export cs=/home/sam/school/csc/1332\ hudachek-buswell/
+
+#
+# #################################
 
 # ################################
 # Bookmarking
 # ################################
+
 export MARKPATH=$HOME/.marks
 function jump { 
   cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
@@ -74,7 +106,15 @@ function unmark {
 function marks {
   ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
 }
+
 # ################################
+#
+#
+# ###############################
+
+GREP_OPTIONS=""
+export LD_LIBRARY_PATH=/home/sam/programs/android/android-studio/sdk/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
