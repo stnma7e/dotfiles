@@ -3,7 +3,4 @@
 	url = https://github.com/Mic92/vicious
 [submodule "awesome-wm-widgets"]
 	path = awesome-wm-widgets
-	url = ./awesome-wm-widgets
-[submodule "battery-widget"]
-	path = battery-widget
-	url = ./battery-widget
+	url = https://github.com/streetturtle/awesome-wm-widgets
