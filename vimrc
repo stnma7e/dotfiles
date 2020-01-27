@@ -22,6 +22,7 @@ Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'bling/vim-airline'
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'ctrlpvim/ctrlp.vim'
 
 call plug#end()
 
@@ -32,6 +33,8 @@ call plug#end()
 " plugin keybindings
 noremap <F8> :TagbarToggle<CR>
 nmap <F3> :NERDTreeToggle<CR>
+nnoremap <leader>, :CtrlP<cr>
+nnoremap <leader>. :CtrlPTag<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Usage settings
