@@ -4,8 +4,9 @@ install
 -------
 ```shell
 git clone <this-repo>
-mv dotvim .vim
-cd .vim
-git submodule update --init
-ln -s <path-to-.vim>/vimrc ~/.vimrc
+mv dotvim ~/.vim
+cd ~/.vim
+ln -s `pwd`/vimrc ~/.vimrc
 ```
+
+Then open vim and run `PlugInstall`.
