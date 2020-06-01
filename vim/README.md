@@ -1,5 +1,4 @@
 my vim directory
-=======
 
 install
 -------
