@@ -11,7 +11,6 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local vicious = require("vicious")
-local treetile = require("treetile")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -45,8 +44,6 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
 
-beautiful.useless_gap = 3
-
 -- This is used later as the default terminal and editor to run.
 -- terminal = "terminator"
 terminal = "kitty"
@@ -77,7 +74,6 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
     awful.layout.suit.floating,
-    treetile,
 }
 -- }}}
 
@@ -206,7 +202,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "w", "hw", "3", "4", "5", "6", "7", "8", "9", "m", "r", "♫"}, s, awful.layout.layouts[1])
+    awful.tag({ "w", "hw", "3", "4", "5", "6", "7", "m", "r", "♫" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -248,7 +244,7 @@ awful.screen.connect_for_each_screen(function(s)
              wibox.container.rotate(require("awesome-wm-widgets.ram-widget.ram-widget"), "east"),
              cpuwidget,
              s.mysystray,
-             wibox.container.margin(mydateclock, 2),
+             wibox.container.margin(mydateclock, 3),
              wibox.container.margin(mytextclock, 4),
              s.mylayoutbox,
          },
@@ -287,10 +283,8 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    -- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-    --           {description = "show main menu", group = "awesome"}),
-    awful.key({ modkey,           }, "w", function () awful.spawn("rofi -show window") end,
-              {description = "launch rofi window", group = "launcher"}),
+    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+              {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -365,10 +359,8 @@ globalkeys = gears.table.join(
               end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    -- awful.key({ modkey }, "p", function() menubar.show() end,
-    --           {description = "show the menubar", group = "launcher"})
-    awful.key({ modkey }, "p", function () awful.spawn("rofi -show run") end,
-              {description = "launch rofi run", group = "launcher"})
+    awful.key({ modkey }, "p", function() menubar.show() end,
+              {description = "show the menubar", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -418,7 +410,7 @@ clientkeys = gears.table.join(
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
-for i = 1, 12 do
+for i = 1, 10 do
     globalkeys = gears.table.join(globalkeys,
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
