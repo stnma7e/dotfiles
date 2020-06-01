@@ -186,12 +186,12 @@ screen.connect_signal("property::geometry", set_wallpaper)
 --
 --
 
-cpuwidget = awful.widget.graph()
-cpuwidget:set_width(50)
-cpuwidget:set_background_color("#494B4F")
-cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 50, 0 },
-  stops = { { 0, "#FF5656" }, { 0.5, "#88A175" }, { 1, "#AECF96" }}})
-vicious.register(cpuwidget, vicious.widgets.cpu, "$1", 3)
+--cpuwidget = awful.widget.graph()
+--cpuwidget:set_width(50)
+--cpuwidget:set_background_color("#494B4F")
+--cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 50, 0 },
+  --stops = { { 0, "#FF5656" }, { 0.5, "#88A175" }, { 1, "#AECF96" }}})
+--vicious.register(cpuwidget, vicious.widgets.cpu, "$1", 3)
 
 --
 --
@@ -202,7 +202,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "w", "hw", "3", "4", "5", "6", "7", "m", "r", "♫" }, s, awful.layout.layouts[1])
+    awful.tag({ "w", "hw", "3", "4", "5", "6", "7", "8", "9", "m", "r", "♫" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -239,10 +239,10 @@ awful.screen.connect_for_each_screen(function(s)
          s.mytasklist,
          { -- Right widgets
              layout = wibox.layout.fixed.vertical,
-             wibox.container.margin(require("awesome-wm-widgets.batteryarc-widget.batteryarc"), 0),
+             --wibox.container.margin(require("awesome-wm-widgets.batteryarc-widget.batteryarc"), 0),
              -- wibox.container.margin(require("battery-widget.battery-widget"), 0),
-             wibox.container.rotate(require("awesome-wm-widgets.ram-widget.ram-widget"), "east"),
-             cpuwidget,
+             --wibox.container.rotate(require("awesome-wm-widgets.ram-widget.ram-widget"), "east"),
+             --cpuwidget,
              s.mysystray,
              wibox.container.margin(mydateclock, 3),
              wibox.container.margin(mytextclock, 4),
@@ -410,7 +410,7 @@ clientkeys = gears.table.join(
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
-for i = 1, 10 do
+for i = 0,12 do
     globalkeys = gears.table.join(globalkeys,
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
