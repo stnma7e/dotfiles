@@ -52,70 +52,38 @@ alias rm='gio trash'
 alias remake='make clean; make'
 alias time=/usr/bin/time
 alias clock="~/bin/clock ~/.punchcard"
+alias vim=nvim
 
-PATH=~/.cabal/bin:$PATH
-PATH=~/.cargo/bin:$PATH
-PATH=~/.usr/bin:$PATH
-PATH=~/.usr/local/bin:$PATH
-PATH=~/.usr/bin/cargo:$PATH
-PATH=/opt/matlab/bin:$PATH
-#PATH=/home/sam/.usr/programs/miniconda/bin:$PATH
-PATH=~/programs/android/android-studio/bin:$PATH
+export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+export PATH=~/.cargo/bin:$PATH
+export PATH=~/.usr/bin:$PATH
+export PATH=~/.usr/local/bin:$PATH
+export PATH=/opt/matlab/bin:$PATH
+export PATH=~/.usr/npm/bin:$PATH
 
+export GREP_OPTIONS=""
 export LIBGL_DEBUG=verbose
 export MESA_DEBUG
 export GOPATH=~
 #export RUST_SRC_PATH=~/src/rust/src
 export RUST_SRC_PATH=~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src
-export RUST_BACKTRACE=1
-
-# ##################################
-# RESEARCH
-#
-
-export por=/home/sam/school/chem/mcdaniel/supercapacitor/porous
-
-#
-# #################################
-
-# ##################################
-# SCHOOL
-#
-
-export CLASSPATH=.:/home/sam/school/csc/1332\ hudachek-buswell/junit.jar:/home/sam/school/csc/1332\ hudachek-buswell/hamcrest-core.jar
-
-export cs=/home/sam/school/csc/1332\ hudachek-buswell/
-
-#
-# #################################
-
-# ################################
-# Bookmarking
-# ################################
-
-export MARKPATH=$HOME/.marks
-function jump { 
-  cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
-}
- function mark { 
-  mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
-}
-function unmark { 
-  rm -i $MARKPATH/$1 
-}
-function marks {
-  ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
-}
-
-# ################################
-#
-#
-# ###############################
-
-GREP_OPTIONS=""
-export LD_LIBRARY_PATH=/home/sam/programs/android/android-studio/sdk/lib:$LD_LIBRARY_PATH
+export RUST_BACKTRACE=t
+export MOZ_USE_XINPUT2=1
+export _JAVA_AWT_WM_NONREPARENTING=1
 export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 command fortune -ae
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+. /home/sam/programs/miniconda3/etc/profile.d/conda.sh
+
+export CONDA_PROJECT_ROOT="$HOME/conda"
+
+# tmux a -t 0
+
+eval "$(starship init zsh)"
