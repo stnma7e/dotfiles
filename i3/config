@@ -191,9 +191,21 @@ bindsym $mod+r mode "resize"
 #}
 #bindsym $mod+m bar mode toggle
 
+assign [class="Mailspring"] number 10
+assign [class="mailspring"] number 10
+assign [class="slack"] 12
+assign [class="Slack"] 12
+assign [class="spotify"] number 12
+assign [class="Spotify"] number 12
+assign [class="FAHControl"] 12
+
 gaps inner 10
 gaps outer 6
 
+exec mailspring
+exec spotify
+exec slack
+exec FAHControl
 exec picom
 exec polybar example
 exec i3-msg
