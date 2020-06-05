@@ -209,3 +209,4 @@ exec FAHControl
 exec picom
 exec polybar example
 exec i3-msg
+exec redshift
