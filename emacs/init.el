@@ -21,10 +21,18 @@
   (add-to-list 'load-path "<path where use-package is installed>")
   (require 'use-package))
 
+;;
 ;; Global configs
+;;
 (setq scroll-step           1
       scroll-conservatively 10000)
 (tool-bar-mode -1)
+
+;; store all backup and autosave files in the tmp dir
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;;
 ;; Package configs
@@ -37,6 +45,10 @@
 
 (require 'helm-config)
 (helm-mode 1)
+(global-set-key (kbd "M-x") #'helm-M-x)
+(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+(global-set-key (kbd "C-x C-f") #'helm-find-files)
+(global-set-key (kbd "C-x C-b") #'helm-buffers-list)
 
 (use-package nlinum-relative
     :config
