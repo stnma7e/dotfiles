@@ -1,2 +1,6 @@
+settings.el
+auto-save-list
+request
+url
 elpa
 .lsp-session*

@@ -10,3 +10,6 @@
 [submodule "awesome/vicious"]
 	path = awesome/vicious
 	url = https://github.com/Mic92/vicious
+[submodule "emacs/use-package"]
+	path = emacs/use-package
+	url = https://github.com/jwiegley/use-package
