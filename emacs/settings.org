@@ -35,6 +35,10 @@ Ensure that package archives are available and setup package infastructure.
       `((".*" ,temporary-file-directory t)))
 #+END_SRC
 
+* Programming languages
+#+BEGIN_SRC emacs-lisp
+(use-package rustic)
+#+END_SRC
 * Whitespace settings
 
 #+BEGIN_SRC emacs-lisp
@@ -48,7 +52,7 @@ Ensure that package archives are available and setup package infastructure.
 ;;  (setq whitespace-tab-regexp "    "))
 #+END_SRC
 
-* Simple package configs
+* Emacs display configs
 
 This section contains evil mode, helm, etc.
 
@@ -75,9 +79,7 @@ This section contains evil mode, helm, etc.
     (add-hook 'prog-mode-hook 'nlinum-relative-mode)
     (add-hook 'org-mode-hook 'nlinum-relative-mode))
 
-(use-package async
-    :config
-    (async-bytecomp-package-mode 1))
+(use-package vterm)
 #+END_SRC
 
 * Code completion
@@ -110,7 +112,6 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
 * Themes
 
 #+BEGIN_SRC emacs-lisp
-(use-package railscasts-reloaded-theme
-    :init
-    (load-theme 'railscasts-reloaded t))
+;; (use-package railscasts-reloaded-theme)
+;; (use-package color-theme-sanityinc-tomorrow)
 #+END_SRC
