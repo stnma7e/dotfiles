@@ -15,6 +15,8 @@ local vicious = require("vicious")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+beautiful.useless_gap = 3
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
