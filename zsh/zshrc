@@ -1,4 +1,4 @@
-source /home/sam/.zsh/antigen.zsh
+source ${HOME}/.zsh/antigen.zsh
 
 antigen use oh-my-zsh
 
@@ -23,7 +23,7 @@ antigen apply
 # Customize to your needs...
 #
 
-source /home/sam/.zsh/cb.sh
+source ${HOME}/.zsh/cb.sh
 
 export TERM=xterm-256color
 export SSH_AUTH_SOCK=0
@@ -32,7 +32,6 @@ alias ls='ls -Fsbh --color=always'
 #alias rm='rm -i'
 alias rm='gio trash'
 #alias time=/usr/bin/time
-alias vim=nvim
 
 export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 export PATH=~/.cargo/bin:$PATH
