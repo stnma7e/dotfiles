@@ -25,6 +25,7 @@ Ensure that package archives are available and setup package infastructure.
 (setq scroll-step           1
       scroll-conservatively 10000)
 (tool-bar-mode -1) ; turn off the save/open file/etc buttons at the top of emacs
+(global-visual-line-mode) ;; word-wrap
 (setq-default indent-tabs-mode nil)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -37,7 +38,18 @@ Ensure that package archives are available and setup package infastructure.
 
 * Programming languages
 #+BEGIN_SRC emacs-lisp
+(use-package projectile
+    :config
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode +1))
+(use-package helm-projectile
+    :config
+    (helm-projectile-on))
+
+(use-package magit)
+
 (use-package rustic)
+(use-package haskell-mode)
 #+END_SRC
 * Whitespace settings
 
@@ -87,17 +99,15 @@ This section contains evil mode, helm, etc.
 This section includes LSP, syntax checking (flycheck), completion (company), etc.
 
 #+BEGIN_SRC emacs-lisp
+(setq lsp-keymap-prefix "C-c l")
 (use-package lsp-mode
-    :config
-    (setq lsp-keymap-prefix "C-c l")
-    (use-package lsp-mode
-        :hook ((prog-mode . lsp)
-               (lsp-mode . lsp-enable-which-key-integration))
-        :commands lsp)
-    (use-package lsp-ui :commands lsp-ui-mode)
-    (use-package helm-lsp :commands helm-lsp-workspace-symbol)
-    (with-eval-after-load 'lsp-mode
-      (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
+    :hook ((prog-mode . lsp)
+           (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(with-eval-after-load 'lsp-mode
+    (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 
 (use-package company
     :config
