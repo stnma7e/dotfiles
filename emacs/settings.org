@@ -6,7 +6,7 @@ Ensure that package archives are available and setup package infastructure.
 (require 'package)
 (package-initialize)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
 (eval-when-compile
   (add-to-list 'load-path
@@ -37,6 +37,7 @@ Ensure that package archives are available and setup package infastructure.
 #+END_SRC
 
 * Programming languages
+
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
     :config
@@ -51,6 +52,7 @@ Ensure that package archives are available and setup package infastructure.
 (use-package rustic)
 (use-package haskell-mode)
 #+END_SRC
+
 * Whitespace settings
 
 #+BEGIN_SRC emacs-lisp
@@ -66,9 +68,18 @@ Ensure that package archives are available and setup package infastructure.
 
 * Emacs display configs
 
+Set C-like language configuration for spacing. This includes C/C++, Java, etc.
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode 1)
+
+(setq-default c-default-style "linux"
+              c-basic-offset 4)
+#+END_SRC
+
 This section contains evil mode, helm, etc.
 
 #+BEGIN_SRC emacs-lisp
+(setq evil-disable-insert-state-bindings t)
 (use-package evil
     :config
     (evil-mode 1))
