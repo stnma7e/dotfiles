@@ -16,6 +16,8 @@ antigen bundle archlinux
 antigen bundle battery
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle popstas/zsh-command-time
+ZSH_COMMAND_TIME_COLOR="cyan"
 
 antigen apply
 
@@ -31,6 +33,7 @@ export SSH_AUTH_SOCK=0
 alias ls='ls -Fsbh --color=always'
 #alias rm='rm -i'
 alias rm='gio trash'
+alias binrm='/bin/rm -i'
 #alias time=/usr/bin/time
 
 export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
