@@ -17,6 +17,8 @@ Ensure that package archives are available and setup package infastructure.
     (require 'use-package-ensure)
     (setq use-package-always-ensure t))
 
+  (set-frame-parameter nil 'name server-name) ;; for eyebrowse since it saves based on frame name
+
   (defun open-config()
     (interactive)
     (find-file (expand-file-name "settings.org" user-emacs-directory)))
@@ -36,43 +38,12 @@ Ensure that package archives are available and setup package infastructure.
 
   ;; store all backup and autosave files in the tmp dir
   (setq backup-directory-alist
-        `((".*" . ,temporary-file-directory)))
-  (setq auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t)))
+        `(("." . ,temporary-file-directory)))
 
   ;; Line numbers
   (setq-default display-line-numbers-type 'relative)
   (global-display-line-numbers-mode)
   (column-number-mode)
-#+END_SRC
-
-* Keybindings
-
-#+BEGIN_SRC emacs-lisp
-  (use-package general)
-  (general-define-key
-   :states '(insert normal global)
-   ;; prevent annoying command from running when I really just want to switch buffers
-   "C-x C-o" 'other-window
-   ;; prevent annoying kmacro popups when I really just want to kill a buffer
-   "C-x C-k" 'kill-buffer
-   ;; prevent annoying command from running when I really just want to switch buffers
-   "C-x C-b" 'switch-to-buffer
-   ;; prevent accidentally pressing this sequence from freezing emacs over CRD
-   "C-x C-z" nil
-   )
-  (general-define-key
-   :states 'normal
-   :keymaps 'override
-   :prefix "SPC"
-   "." 'find-file
-   "," 'switch-to-buffer
-   "*" 'projectile-ripgrep
-   "b r" 'revert-buffer-quick
-   "p" 'projectile-command-map
-   "p ESC" nil
-   "r" 'findCorrespondingBuildFile
-  )
 #+END_SRC
 
 * Programming languages
@@ -86,6 +57,17 @@ Ensure that package archives are available and setup package infastructure.
       (org-edit-special)
       (indent-region (point-min) (point-max))
       (org-edit-src-exit)))
+
+  (use-package blamer
+    :defer 20
+    :custom
+    (blamer-idle-time 0.3)
+    (blamer-min-offset 70)
+    :custom-face
+    (blamer-face ((t :foreground "#7a88cf"
+                     :background nil
+                     :height 70
+                     :italic t))))
 
   (use-package go-mode)
 
@@ -117,16 +99,39 @@ Ensure that package archives are available and setup package infastructure.
 Set C-like language configuration for spacing. This includes C/C++, Java, etc.
 #+BEGIN_SRC emacs-lisp
   (show-paren-mode 1)
+  (save-place-mode 1)
 
+  ;; Set default font size
   (set-face-attribute 'default nil :height 80)
 
-  (setq-default c-default-style "linux"
-                c-basic-offset 4)
+  ;; make popup backgrounds a little darker
+  (use-package solaire-mode
+    :config
+    (solaire-global-mode +1))
 
   (use-package diff-hl
     :config
     (global-diff-hl-mode))
+
+  (use-package mood-line
+    :config
+    (mood-line-mode))
+
+  (use-package eyebrowse-restore
+    ;; :load-path "~/.emacs.d/eyebrowse-restore-src"
+    :init
+    (defun eyebrowse-restore-from-server-name (frame)
+      (eyebrowse-restore server-name))
+    :config
+    ;; (add-hook 'after-make-frame-functions 'eyebrowse-restore-from-server-name)
+    (eyebrowse-restore-mode))
+
+  (use-package eyebrowse
+    :after eyebrowse-restore
+    :config
+    (setq eyebrowse-mode t))
 #+END_SRC
+
 
 This section contains evil mode, helm, etc.
 
@@ -136,26 +141,24 @@ This section contains evil mode, helm, etc.
     :config
     (global-evil-visualstar-mode))
   (use-package evil
-    :init
-    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-    (setq evil-undo-system 'undo-fu)
-    (setq evil-want-keybinding nil) ;; required by evil-collection
-    (setq evil-want-C-u-scroll t)
+    :custom
+    (evil-want-integration t) ;; This is optional since it's already set to t by default.
+    (evil-want-keybinding nil) ;; required by evil-collection
+    (evil-want-C-u-scroll t)
     :config
-    (evil-mode 1)
-    (evil-select-search-module 'evil-search-module 'evil-search))
-
+    (evil-set-undo-system 'undo-fu)
+    (evil-select-search-module 'evil-search-module 'evil-search)
+    (evil-mode 1))
   (use-package evil-collection
     :after evil
     :config
     (evil-collection-init))
 
-  (use-package which-key
-    :init
-    (setq-default which-key-idle-delay 0.25)
-    :config
-    ;; Lower which-key latency
-    (which-key-mode 1))
+  ;; Ensure that filenames are unique and retain information about their directory.
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward
+        uniquify-after-kill-buffer-p t ; rename after killing
+        )
 #+END_SRC
 
 * Code completion
@@ -163,8 +166,18 @@ This section contains evil mode, helm, etc.
 This section includes LSP, syntax checking (flycheck), completion (company), etc.
 
 #+BEGIN_SRC emacs-lisp
-  (setq completion-styles '(flex))
+  ;; better fuzzy search than flex (whole word matching)
+  (use-package hotfuzz
+    :config
+    (setq completion-styles '(hotfuzz)))
+  ;; even better fuzzy search that matches on multiple partial word queries at once
+  (use-package orderless
+    :after hotfuzz
+    :custom
+    (completion-styles '(orderless hotfuzz))
+    (completion-category-overrides '((file (styles basic hotfuzz partial-completion)))))
   (use-package vertico
+    :after orderless
     :init
     (vertico-mode)
 
@@ -207,8 +220,8 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
 
     ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
     ;; Vertico commands are hidden in normal buffers.
-    ;; (setq read-extended-command-predicate
-    ;;       #'command-completion-default-include-p)
+    (setq read-extended-command-predicate
+          #'command-completion-default-include-p)
 
     ;; Enable recursive minibuffers
     (setq enable-recursive-minibuffers t))
@@ -225,12 +238,12 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
     :config
     (add-hook 'go-mode-hook 'eglot-ensure))
 
-  ;; Ensure that filenames are unique and retain information about their directory.
-  ;;(require 'uniquify)
-  ;;(setq-default
-  ;; uniquify-buffer-name-style 'forward
-  ;; uniquify-after-kill-buffer-p t  ; rename after killing
-  ;; )
+  (use-package which-key
+    :init
+    (setq-default which-key-idle-delay 0.25)
+    :config
+    ;; Lower which-key latency
+    (which-key-mode 1))
 #+END_SRC
 
 * Android.bp <=> BUILD functions
@@ -397,7 +410,7 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-one t)
+    ;(load-theme 'doom-spacegrey t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -408,4 +421,37 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
     (doom-themes-treemacs-config)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
+
+  (use-package color-theme-sanityinc-tomorrow
+    :config
+    (color-theme-sanityinc-tomorrow-eighties))
+#+END_SRC
+
+* Keybindings
+
+#+BEGIN_SRC emacs-lisp
+  (use-package general)
+  (general-define-key
+   :states '(insert normal global)
+   ;; prevent annoying command from running when I really just want to switch buffers
+   "C-x C-o" 'other-window
+   ;; prevent annoying kmacro popups when I really just want to kill a buffer
+   "C-x C-k" 'kill-buffer
+   ;; prevent annoying command from running when I really just want to switch buffers
+   "C-x C-b" 'switch-to-buffer
+   ;; prevent accidentally pressing this sequence from freezing emacs over CRD
+   "C-x C-z" nil
+   )
+  (general-define-key
+   :states 'normal
+   :keymaps 'override
+   :prefix "SPC"
+   "." 'find-file
+   "," 'switch-to-buffer
+   "*" 'projectile-ripgrep
+   "b r" 'revert-buffer-quick
+   "p" 'projectile-command-map
+   "p ESC" nil
+   "r" 'findCorrespondingBuildFile
+  )
 #+END_SRC
