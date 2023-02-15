@@ -100,6 +100,12 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
 #+BEGIN_SRC emacs-lisp
   (show-paren-mode 1)
   (save-place-mode 1)
+  (global-whitespace-mode 1)
+  (setq whitespace-style
+        '(face tabs trailing space-before-tab newline indentation empty space-after-tab tab-mark missing-newline-at-eof))
+  (custom-set-faces
+   '(whitespace-tab ((t (:foreground "#636363" :background nil)))))
+
 
   ;; Set default font size
   (set-face-attribute 'default nil :height 80)
