@@ -445,9 +445,7 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 
-  (use-package color-theme-sanityinc-tomorrow
-    :config
-    (color-theme-sanityinc-tomorrow-eighties))
+  (use-package color-theme-sanityinc-tomorrow)
 #+END_SRC
 
 * Keybindings
