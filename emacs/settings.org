@@ -29,6 +29,7 @@ Ensure that package archives are available and setup package infastructure.
 #+BEGIN_SRC emacs-lisp
   (setq scroll-step           1
         scroll-conservatively 10000)
+  (xterm-mouse-mode 1)
 
   (menu-bar-mode -1) ; turn off file menu
   (tool-bar-mode -1) ; turn off the save/open file/etc buttons at the top of emacs
@@ -50,6 +51,7 @@ Ensure that package archives are available and setup package infastructure.
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit)
+  (use-package transient)
   (use-package format-all)
 
   (defun indent-org-block-automatically ()
@@ -78,7 +80,13 @@ Ensure that package archives are available and setup package infastructure.
 
   (use-package code-cells
     :config
-    (add-hook 'python-mode-hook 'code-cells-mode-maybe))
+    (add-hook 'python-mode-hook 'code-cells-mode-maybe)
+    (let ((map code-cells-mode-map))
+        (define-key map (kbd "M-p") 'code-cells-backward-cell)
+        (define-key map (kbd "M-n") 'code-cells-forward-cell)
+        (define-key map (kbd "C-c C-c") 'code-cells-eval)
+        ;; Overriding other minor mode bindings requires some insistence...
+        (define-key map [remap jupyter-eval-line-or-region] 'code-cells-eval)))
 #+END_SRC
 
 * Whitespace settings
@@ -147,9 +155,10 @@ This section contains evil mode, helm, etc.
     :config
     (global-evil-visualstar-mode))
   (use-package evil
+    :init
+    (setq evil-want-keybinding nil) ;; required by evil-collection
     :custom
     (evil-want-integration t) ;; This is optional since it's already set to t by default.
-    (evil-want-keybinding nil) ;; required by evil-collection
     (evil-want-C-u-scroll t)
     :config
     (evil-set-undo-system 'undo-fu)
@@ -320,6 +329,9 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
 #+BEGIN_SRC emacs-lisp
   ;; Android filtypes
   (setq auto-mode-alist
+        (append '((".*BUILD.*\\'" . bazel-build-mode))
+                auto-mode-alist))
+  (setq auto-mode-alist
         (append '((".*\\.bp\\'" . json-mode))
                 auto-mode-alist))
 
@@ -330,10 +342,9 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
            (pathsToAndroidTopAndFile (getAndroidInstallPath splitPath))
            (pathToFileFromTop (mapconcat 'identity (car (cdr pathsToAndroidTopAndFile)) "/"))
            (lineNumber (format-mode-line "%l"))
-           (codeSearchUrl (concat "https://cs.android.com/android/platform/superproject/+/master:" pathToFileFromTop ";l=" lineNumber)))
+           (codeSearchUrl (concat "https://cs.android.com/android/platform/superproject/+/main:" pathToFileFromTop ";l=" lineNumber)))
       (message codeSearchUrl)
-      codeSearchUrl)
-    )
+      codeSearchUrl))
   (defun cslink-copy ()
     (interactive)
     (let ((link (cslink)))
@@ -348,7 +359,6 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
 
 #+BEGIN_SRC emacs-lisp
   (defun kill-mode-buffers (mode)
-    (interactive s)
     (mapc (lambda (buffer)
             (when (eq mode (buffer-local-value 'major-mode buffer))
               (kill-buffer buffer)))
@@ -359,6 +369,13 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
   (defun kill-go-buffers ()
     (interactive)
     (kill-mode-buffers 'go-mode))
+  (defun kill-starlark-buffers ()
+    (interactive)
+    (kill-mode-buffers 'bazel-starlark-mode)
+    (kill-mode-buffers 'skylark-mode))
+  (defun kill-build-buffers ()
+    (interactive)
+    (kill-mode-buffers 'bazel-build-mode))
 
   (defun run-in-vterm-kill (process event)
     "A process sentinel. Kills PROCESS's buffer if it is live."
@@ -447,6 +464,7 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
    "C-x C-b" 'switch-to-buffer
    ;; prevent accidentally pressing this sequence from freezing emacs over CRD
    "C-x C-z" nil
+   "C-/" 'comment-line
    )
   (general-define-key
    :states 'normal
@@ -459,5 +477,8 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
    "p" 'projectile-command-map
    "p ESC" nil
    "r" 'findCorrespondingBuildFile
+   "c r" 'eglot-rename
+   "c D" 'eglot-find-implementation
+   "c t" 'eglot-find-typeDefinition
   )
 #+END_SRC
