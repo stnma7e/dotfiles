@@ -131,6 +131,10 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
     :config
     (mood-line-mode))
 
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
   (use-package eyebrowse-restore
     ;; :load-path "~/.emacs.d/eyebrowse-restore-src"
     :init
@@ -147,7 +151,7 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
 #+END_SRC
 
 
-This section contains evil mode, helm, etc.
+This section contains evil mode
 
 #+BEGIN_SRC emacs-lisp
   (use-package undo-fu)
@@ -168,12 +172,6 @@ This section contains evil mode, helm, etc.
     :after evil
     :config
     (evil-collection-init))
-
-  ;; Ensure that filenames are unique and retain information about their directory.
-  (require 'uniquify)
-  (setq uniquify-buffer-name-style 'forward
-        uniquify-after-kill-buffer-p t ; rename after killing
-        )
 #+END_SRC
 
 * Code completion
@@ -190,7 +188,7 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
     :after hotfuzz
     :custom
     (completion-styles '(orderless hotfuzz))
-    (completion-category-overrides '((file (styles basic hotfuzz partial-completion)))))
+    (completion-category-overrides '((file (styles hotfuzz partial-completion)))))
   (use-package vertico
     :after orderless
     :init
@@ -259,6 +257,12 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
     :config
     ;; Lower which-key latency
     (which-key-mode 1))
+
+  ;; Ensure that filenames are unique and retain information about their directory.
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward
+        uniquify-after-kill-buffer-p t ; rename after killing
+        )
 #+END_SRC
 
 * Android.bp <=> BUILD functions
@@ -446,6 +450,12 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
     (doom-themes-org-config))
 
   (use-package color-theme-sanityinc-tomorrow)
+
+  ;; for doom-monokai-pro, set the line numbers to be just a little lighter
+  (custom-set-faces
+    `(line-number ((t (:foreground ,(doom-color 'base6))))))
+  (custom-set-faces
+    `(line-number ((t (:foreground ,(doom-color 'base6))))))
 #+END_SRC
 
 * Keybindings
