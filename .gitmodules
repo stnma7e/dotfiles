@@ -4,9 +4,9 @@
 [submodule "awesome/vicious"]
 	path = awesome/vicious
 	url = https://github.com/Mic92/vicious
-[submodule "emacs/use-package"]
-	path = emacs/use-package
-	url = https://github.com/jwiegley/use-package
 [submodule "kitty/base16-kitty"]
 	path = kitty/base16-kitty
 	url = https://github.com/kdrag0n/base16-kitty.git
+[submodule "tmux/plugins/tpm"]
+	path = tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
