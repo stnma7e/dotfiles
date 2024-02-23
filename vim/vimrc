@@ -3,43 +3,65 @@ set nocompatible
 call plug#begin()
 
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
+Plug 'google/vim-maktaba'               " vimscript extensions (needed for vim-bazel)
 Plug 'flazz/vim-colorschemes'
-Plug 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'             " autocloses parens
 Plug 'scrooloose/nerdcommenter'
 "Plug 'scrooloose/nerdtree'
 Plug 'luochen1990/rainbow'
 Plug 'ervandew/supertab'
 Plug 'vim-syntastic/syntastic'
 Plug 'bling/vim-airline'
-Plug 'sirver/ultisnips'
+" Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'rakr/vim-one'
+Plug 'airblade/vim-gitgutter'
+Plug 'rrethy/vim-illuminate'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'thinca/vim-visualstar'
+
+" Colorschemes
+Plug 'sonph/onehalf', {'rtp': 'vim/'}
 
 " Languages
-Plug 'lervag/vimtex'
-Plug 'hallison/vim-markdown'
-Plug 'lukerandall/haskellmode-vim'
-Plug 'liuchengxu/vista.vim'
-Plug 'rust-lang/rust.vim'
-Plug 'andys8/vim-elm-syntax'
-Plug 'leafgarland/typescript-vim'
+if (has("nvim"))
+    Plug 'neovim/nvim-lspconfig'
+else
+    Plug 'lervag/vimtex'
+    Plug 'hallison/vim-markdown'
+    Plug 'lukerandall/haskellmode-vim'
+    Plug 'liuchengxu/vista.vim'
+    Plug 'rust-lang/rust.vim'
+    Plug 'andys8/vim-elm-syntax'
+    Plug 'leafgarland/typescript-vim'
+    Plug 'fatih/vim-go' ", { 'do': ':GoUpdateBinaries' }
+endif
+
+Plug 'bazelbuild/vim-bazel'
 
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Keybindings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <SPACE> <Nop>
+let mapleader=" "
 
 " plugin keybindings
-nnoremap <leader>, :CtrlP<cr>
-nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <leader>, :CtrlPBuffer<cr>
+nnoremap <leader>. :CtrlPMixed<cr>
+map <C-x><C-k> :bp\|bd #
+map <C-x><C-s> :w<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Usage settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set mouse=a
+" remap :q to :close, that way we don't accidentally quit the last window
+cabbrev q <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
 
 if has("syntax")
   syntax on
@@ -70,12 +92,20 @@ set incsearch     	         " Incremental search
 set hidden            		 " Hide buffers when they are abandoned
 set autoread	      		 " watch for file changes
 
-set tabstop=4
+set tabstop=8
 set shiftwidth=4
 set expandtab 			     " Convert tabs to spaces
 
+set updatetime=100
+
 set undofile
-set undodir=~/.vim/undodir
+if (has("nvim"))
+    set undodir=~/.vim/undodir_nvim
+else
+    set undodir=~/.vim/undodir
+endif
+
+set list lcs=trail:·,tab:»\ ,eol:¬
 
 let g:haddock_browser = "/usr/bin/firefox"
 au Bufenter *.hs compiler ghc
@@ -90,22 +120,53 @@ let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
+" Go LSP settings
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+
+if executable('rg')
+  let g:ctrlp_user_command = 'rg %s --files --hidden --color=never --glob ""'
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " UI settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
+"For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+"Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+" < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+if (has("termguicolors"))
+    set termguicolors
+endif
+
+" You might have to force true color when using regular vim inside tmux as the
+" colorscheme can appear to be grayscale with "termguicolors" option enabled.
+if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+syntax on
+set termguicolors
+
+colorscheme onehalfdark
+let g:airline_theme='onehalfdark'
+" colorscheme bensday
+" colorscheme desertEx
+" colorscheme hybrid
+set background=dark
+
 let g:rainbow_active = 1
 
 " Highlight current line
-" set cul
+set cul
 hi CursorLine term=none cterm=none ctermbg=0
 
-:set t_Co=256 				 " 256 color palletes
- colorscheme bensday
-" colorscheme desertEx
-set background=dark
-:highlight Normal ctermfg=white ctermbg=black
-" colorscheme hybrid
+hi def IlluminatedWordText gui=bold
 
 set showcmd           		 " Show (partial) command in status line.
 set ruler 			         " Show location in file
@@ -114,6 +175,5 @@ set relativenumber
 set nohlsearch 			     " Highlight matches
 set showmatch         		 " Show matching brackets.
 set mousehide 			     " Don't show mouse while typing
-" set antialias 			     " Antialias fonts
 set wildmenu
 set wildmode=longest,list,full
