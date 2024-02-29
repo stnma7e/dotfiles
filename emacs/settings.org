@@ -73,6 +73,10 @@ Ensure that package archives are available and setup package infastructure.
 
   (use-package go-mode)
 
+  (use-package rust-mode
+    :config
+    (add-hook 'rust-mode-hook 'eglot-ensure))
+
   (use-package python-mode)
   (defun pyformat ()
     (interactive)
@@ -116,7 +120,7 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
 
 
   ;; Set default font size
-  (set-face-attribute 'default nil :height 80)
+  (set-face-attribute 'default nil :height 110)
 
   ;; make popup backgrounds a little darker
   (use-package solaire-mode
