@@ -45,15 +45,10 @@ export PATH=~/.usr/npm/bin:$PATH
 
 export LIBGL_DEBUG=verbose
 export MESA_DEBUG
-export RUST_SRC_PATH=~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src
+export RUST_SRC_PATH=~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src
 export RUST_BACKTRACE=t
 export MOZ_USE_XINPUT2=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 export LD_LIBRARY_PATH=/usr/local/lib/:/opt/openmm/openmm74/lib:$LD_LIBRARY_PATH
-
-. /home/sam/programs/miniconda3/etc/profile.d/conda.sh
-export CONDA_PROJECT_ROOT="$HOME/conda"
-
-if [ -e /home/sam/.nix-profile/etc/profile.d/nix.sh ]; then . /home/sam/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 command fortune -ae
