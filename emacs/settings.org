@@ -597,9 +597,11 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
 
   ;; for doom-monokai-pro, set the line numbers to be just a little lighter
   (custom-set-faces
-    `(line-number ((t (:foreground ,(doom-color 'base5))))))
-  (custom-set-faces
-    `(match ((t (:background ,(doom-color 'dark-blue))))))
+    `(line-number ((t (:foreground ,(doom-color 'base5)))))
+    `(match ((t (:background ,(doom-color 'dark-blue)))))
+    `(company-preview-common ((t
+       (:foreground ,(doom-color 'yellow)
+        :background ,(doom-color 'base5))))))
 #+END_SRC
 
 * Keybindings
