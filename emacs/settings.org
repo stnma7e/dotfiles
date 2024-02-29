@@ -598,6 +598,8 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
   ;; for doom-monokai-pro, set the line numbers to be just a little lighter
   (custom-set-faces
     `(line-number ((t (:foreground ,(doom-color 'base5))))))
+  (custom-set-faces
+    `(match ((t (:background ,(doom-color 'dark-blue))))))
 #+END_SRC
 
 * Keybindings
@@ -615,7 +617,10 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
    ;; prevent accidentally pressing this sequence from freezing emacs over CRD
    "C-x C-z" nil
    "C-/" 'comment-line
-   )
+   ;; scroll view without moving point
+   "M-<up>" 'scroll-up-line
+   "M-<down>" 'scroll-down-line
+  )
   (general-define-key
    :states 'normal
    :keymaps 'override
