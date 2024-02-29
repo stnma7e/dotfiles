@@ -6,8 +6,6 @@ Ensure that package archives are available and setup package infastructure.
   ;; ensure everything is byte-compiled
   (byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
 
-  (require 'google)
-
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
