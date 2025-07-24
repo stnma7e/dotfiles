@@ -55,6 +55,8 @@ nnoremap <leader>. :CtrlPMixed<cr>
 map <C-x><C-k> :bp\|bd #
 map <C-x><C-s> :w<cr>
 
+nnoremap <C-@> :call system("wl-copy", @")<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Usage settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

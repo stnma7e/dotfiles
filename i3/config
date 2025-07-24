@@ -58,6 +58,8 @@ bindsym $mod+d exec dmenu_run
 bindsym $mod+p exec rofi -show run
 #bindsym $mod+o exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 bindsym $mod+o exec "clipman pick -t rofi"
+bindsym $mod+i exec out="/home/sam/screenshots/$(date -Iseconds).png" && grim -g "$(slurp -d)" "$out" && cat "$out" | wl-copy
+bindsym $mod+u exec out="/home/sam/screenshots/$(date -Iseconds).png" && grim "$out" && cat "$out" | wl-copy
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -231,3 +233,4 @@ smart_borders on
 
 exec dunst
 exec wl-paste -t text --watch clipman store --no-persist --max-items=25
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway

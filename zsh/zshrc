@@ -35,6 +35,9 @@ alias ls='ls -Fsbh --color=always'
 alias rm='gio trash'
 alias binrm='/bin/rm -i'
 #alias time=/usr/bin/time
+alias jjs='jj show'
+alias jjb='jj bookmark'
+alias jjgp='jj git push'
 
 export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 export PATH=~/.cargo/bin:$PATH
@@ -42,6 +45,7 @@ export PATH=$PATH:~/.usr/bin
 export PATH=~/.usr/local/bin:$PATH
 export PATH=/opt/matlab/bin:$PATH
 export PATH=~/.usr/npm/bin:$PATH
+export PATH=~/go/bin:$PATH
 
 export LIBGL_DEBUG=verbose
 export MESA_DEBUG
@@ -52,3 +56,4 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export LD_LIBRARY_PATH=/usr/local/lib/:/opt/openmm/openmm74/lib:$LD_LIBRARY_PATH
 
 command fortune -ae
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh

@@ -22,7 +22,7 @@ Ensure that package archives are available and setup package infastructure.
     (require 'use-package-ensure)
     (setq use-package-always-ensure t))
 
-  (set-frame-parameter nil 'name server-name) ;; for eyebrowse since it saves based on frame name
+  ;(set-frame-parameter nil 'name server-name) ;; for eyebrowse since it saves based on frame name
 
   (defun open-config()
     (interactive)
@@ -65,6 +65,12 @@ Ensure that package archives are available and setup package infastructure.
   ;;; Save the desktop state after a bunch of idle time
   ;(setq save-emacs-timer
   ;  (run-with-idle-timer 300 t 'save-emacs-state))
+#+END_SRC
+
+* Emacs as a tool
+
+#+BEGIN_SRC emacs-lisp
+  (use-package pdf-tools)
 #+END_SRC
 
 * Programming languages
@@ -133,13 +139,13 @@ Ensure that package archives are available and setup package infastructure.
 
   (use-package rust-mode
     :config
-    (add-hook 'rust-mode-hook 'eglot-ensure))
+    (add-hook 'rust-mode-hook 'eglot-ensure)
+    (setq rust-format-on-save t))
 
   (use-package python-mode)
   (defun pyformat ()
     (interactive)
     (shell-command-on-buffer-impl "pyformat"))
-
   (use-package code-cells
     :config
     (add-hook 'python-mode-hook 'code-cells-mode-maybe)
@@ -657,7 +663,8 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config)
 
-    (load-theme 'doom-monokai-pro t))
+    (load-theme 'doom-monokai-pro t)
+   )
 
   ;; for doom-monokai-pro, set the line numbers to be just a little lighter
   (custom-set-faces
