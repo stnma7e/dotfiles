@@ -38,7 +38,7 @@ alias binrm='/bin/rm -i'
 
 export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 export PATH=~/.cargo/bin:$PATH
-export PATH=~/.usr/bin:$PATH
+export PATH=$PATH:~/.usr/bin
 export PATH=~/.usr/local/bin:$PATH
 export PATH=/opt/matlab/bin:$PATH
 export PATH=~/.usr/npm/bin:$PATH

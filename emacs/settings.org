@@ -6,12 +6,19 @@ Ensure that package archives are available and setup package infastructure.
   ;; ensure everything is byte-compiled
   (byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
 
+  (require 'google)
+  (load-library "/google/src/cloud/itsanurag/personal-ws/google3/experimental/users/itsanurag/emacs-related/buganizer/buganizer.el")
+  (require 'buganizer)
+  (require 'google3-eglot)
+  (google3-eglot-setup)
+  (require 'cider-agent)
+
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
   (eval-when-compile
     (add-to-list 'load-path
-                 (expand-file-name "use-package" user-emacs-directory))
+		 (expand-file-name "use-package" user-emacs-directory))
     (require 'use-package-ensure)
     (setq use-package-always-ensure t))
 
@@ -26,28 +33,44 @@ Ensure that package archives are available and setup package infastructure.
 
 #+BEGIN_SRC emacs-lisp
   (setq scroll-step           1
-        scroll-conservatively 10000)
+	scroll-conservatively 10000)
   (xterm-mouse-mode 1)
 
   (menu-bar-mode -1) ; turn off file menu
   (tool-bar-mode -1) ; turn off the save/open file/etc buttons at the top of emacs
   (scroll-bar-mode -1)
-  (setq-default indent-tabs-mode nil)
+  (setq-default indent-tabs-mode t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
   ;; store all backup and autosave files in the tmp dir
   (setq backup-directory-alist
-        `(("." . ,temporary-file-directory)))
+	`(("." . ,temporary-file-directory)))
 
   ;; Line numbers
   (setq-default display-line-numbers-type 'relative)
   (global-display-line-numbers-mode)
   (column-number-mode)
+
+  (load-file "~/.emacs.d/osc52.el")
+  (setq-default interprogram-cut-function 'osc52-select-text)
+
+  ;(defun save-emacs-state ()
+  ;  "Saves the desktop as of right now, so if it dies it'll come back in
+  ;  the right place."
+  ;  (interactive)
+  ;  (desktop-save desktop-dirname)
+  ;  (message "Saved desktop %s" desktop-dirname))
+
+  ;(setq desktop-save-mode 1)
+  ;;; Save the desktop state after a bunch of idle time
+  ;(setq save-emacs-timer
+  ;  (run-with-idle-timer 300 t 'save-emacs-state))
 #+END_SRC
 
 * Programming languages
 
 #+BEGIN_SRC emacs-lisp
+  (use-package llm)
   (use-package magit)
   (use-package transient)
   (use-package format-all)
@@ -65,9 +88,46 @@ Ensure that package archives are available and setup package infastructure.
     (blamer-min-offset 70)
     :custom-face
     (blamer-face ((t :foreground "#7a88cf"
-                     :background nil
-                     :height 70
-                     :italic t))))
+		     :background nil
+		     :height 70
+		     :italic t))))
+
+  (require 'google-java-format)
+  (require 'google-diformat)
+  (add-hook 'java-mode-hook
+    #'(lambda ()
+	(add-hook 'before-save-hook #'google-diformat-google-java-format-changed nil :local)))
+
+  (defun jgit-java-format ()
+    (interactive)
+    (call-process "jgit-java-format"
+	nil nil nil
+	(buffer-file-name (window-buffer (minibuffer-selected-window))))
+    (revert-buffer-quick))
+
+  ;(defun jgit-java-format-region ()
+  ;  (interactive)
+  ;  (apply-function-to-region jgit-java-format-region-fun))
+
+  ;(defun jgit-java-format-region-fun (text)
+  ;  (shell-command-to-string ))
+
+  ;(defun apply-function-to-region (fn)
+  ;(interactive "XFunction to apply to region: ")
+  ;(save-excursion
+  ;  (let* ((beg (region-beginning))
+  ;         (end (region-end))
+  ;         (resulting-text
+  ;          (funcall
+  ;           fn
+  ;           (buffer-substring-no-properties beg end))))
+  ;    (kill-region beg end)
+  ;    (insert resulting-text))))
+
+
+  (add-hook 'c++-mode-hook
+    #'(lambda ()
+	(add-hook 'before-save-hook #'eglot-format nil :local)))
 
   (use-package go-mode)
 
@@ -84,11 +144,13 @@ Ensure that package archives are available and setup package infastructure.
     :config
     (add-hook 'python-mode-hook 'code-cells-mode-maybe)
     (let ((map code-cells-mode-map))
-        (define-key map (kbd "M-p") 'code-cells-backward-cell)
-        (define-key map (kbd "M-n") 'code-cells-forward-cell)
-        (define-key map (kbd "C-c C-c") 'code-cells-eval)
-        ;; Overriding other minor mode bindings requires some insistence...
-        (define-key map [remap jupyter-eval-line-or-region] 'code-cells-eval)))
+	(define-key map (kbd "M-p") 'code-cells-backward-cell)
+	(define-key map (kbd "M-n") 'code-cells-forward-cell)
+	(define-key map (kbd "C-c C-c") 'code-cells-eval)
+	;; Overriding other minor mode bindings requires some insistence...
+	(define-key map [remap jupyter-eval-line-or-region] 'code-cells-eval)))
+
+  (use-package lispy)
 #+END_SRC
 
 * Whitespace settings
@@ -112,10 +174,12 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
   (save-place-mode 1)
   (global-whitespace-mode 1)
   (setq whitespace-style
-        '(face tabs trailing space-before-tab newline indentation empty space-after-tab tab-mark missing-newline-at-eof))
+	'(face tabs trailing space-before-tab newline indentation empty space-after-tab tab-mark missing-newline-at-eof))
   (custom-set-faces
    '(whitespace-tab ((t (:foreground "#636363" :background nil)))))
 
+  ;; Disable variable name inlays by default
+  (add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1)))
 
   ;; Set default font size
   (set-face-attribute 'default nil :height 110)
@@ -637,5 +701,22 @@ This section includes LSP, syntax checking (flycheck), completion (company), etc
    "c r" 'eglot-rename
    "c D" 'eglot-find-implementation
    "c t" 'eglot-find-typeDefinition
+   "c c" 'cider-agent-chat
   )
+
+(defun yank-to-clipboard ()
+  "Use ANSI OSC 52 escape sequence to attempt clipboard copy"
+  ;; https://sunaku.github.io/tmux-yank-osc52.html
+  (interactive)
+  (let ((tmx_tty (concat "/dev/" (shell-command-to-string "ps l | grep 'tmux' | grep -v grep | awk '{print $11}'")))
+        (base64_text (base64-encode-string (encode-coding-string (substring-no-properties (nth 0 kill-ring)) 'utf-8) t)))
+    ;; Check if inside TMUX
+    (if (getenv "TMUX")
+        (shell-command
+         (format "printf \"\033]52;c;%s\a\" > %s" base64_text tmx_tty))
+      ;; Check if inside SSH
+      (if (getenv "SSH_TTY")
+          (shell-command (format "printf \"\033]52;c;%s\a\" > %s" base64_text (getenv "SSH_TTY")))
+        ;; Send to current TTY
+        (send-string-to-terminal (format "\033]52;c;%s\a" base64_text))))))
 #+END_SRC
