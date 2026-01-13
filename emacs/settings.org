@@ -85,11 +85,30 @@ Ensure that package archives are available and setup package infastructure.
     (add-hook 'rust-mode-hook 'eglot-ensure)
     (setq rust-format-on-save t))
 
+  ;; python
+  (use-package python
+    ;; from Claude AI
+    :config
+    (defun my/setup-uv-venv ()
+      "Detect and activate uv virtualenv in project."
+      (when-let* ((project-root (locate-dominating-file default-directory ".venv"))
+                  (venv-path (expand-file-name ".venv" project-root))
+                  (python-path (expand-file-name "bin/python" venv-path)))
+        (when (file-exists-p python-path)
+          (setq-local python-shell-interpreter python-path
+                      python-shell-interpreter-args "-i")
+          (message "Activated uv venv: %s" python-path))))
+    (add-hook 'python-mode-hook #'my/setup-uv-venv)
+    ;; Better defaults for Python shell
+    (setq python-shell-completion-native-enable nil  ; Avoid warnings
+          python-indent-guess-indent-offset-verbose nil))
   (use-package python-mode)
   (defun pyformat ()
     (interactive)
     (shell-command-on-buffer-impl "pyformat"))
   (use-package code-cells
+    :after python
+    :hook (python-mode . code-cells-mode)
     :config
     (add-hook 'python-mode-hook 'code-cells-mode-maybe)
     (let ((map code-cells-mode-map))
