@@ -1,6 +1,28 @@
 settings.el
-auto-save-list
-request
-url
-elpa
+history
+places
+projects
+url/
 .lsp-session*
+
+# Straight.el - ignore everything except lockfile
+straight/repos/
+straight/build/
+straight/build-cache.el
+
+# Native compilation cache
+eln-cache/
+
+# Auto-generated
+auto-save-list/
+*~
+\#*\#
+.\#*
+
+# Package.el (if you have remnants)
+elpa/
+
+# Transient state
+transient/
+recentf
+projectile-bookmarks.eld
