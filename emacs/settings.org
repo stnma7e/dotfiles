@@ -20,6 +20,13 @@ Ensure that package archives are available and setup package infastructure.
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
   (setq straight-use-package-by-default t)
+  (defun my/auto-freeze-and-stage ()
+    (interactive)
+    "Auto-freeze lockfile and stage it for commit."
+    (straight-freeze-versions)
+    (message "✓ Package versions frozen"))
+  ;; Freeze on Emacs exit (safety net)
+  (add-hook 'kill-emacs-hook #'my/auto-freeze-and-stage)
 
   ;; ensure everything is byte-compiled
   ;(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
@@ -127,7 +134,7 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
   (save-place-mode 1)
   (global-whitespace-mode 1)
   (setq whitespace-style
-	'(face tabs trailing space-before-tab newline indentation empty space-after-tab tab-mark missing-newline-at-eof))
+  	'(face tabs trailing space-before-tab newline indentation empty space-after-tab tab-mark missing-newline-at-eof))
   (custom-set-faces
    '(whitespace-tab ((t (:foreground "#636363" :background nil)))))
 
@@ -153,6 +160,8 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
   (use-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+  (use-package markdown-mode)
 #+END_SRC
 
 ** Evil mode
