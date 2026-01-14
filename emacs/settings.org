@@ -45,6 +45,69 @@ Ensure that package archives are available and setup package infastructure.
 * Global configs
 
 #+BEGIN_SRC emacs-lisp
+  ;; store desktop files per-project so that I can quit and restart emacs
+  ;; this is supposed to be like vscode, so that I don't have to reopen all my buffers
+  ;; when I quit emacs
+  ;; we'll see how useful it is
+  (use-package desktop
+    :config
+    (setq desktop-path (list (expand-file-name "desktops" user-emacs-directory))
+          desktop-dirname (expand-file-name "desktops" user-emacs-directory)
+          desktop-restore-eager 10
+          desktop-lazy-idle-delay 1
+          desktop-auto-save-timeout 30)
+
+    ;; Create desktops directory if it doesn't exist
+    (unless (file-directory-p desktop-dirname)
+      (make-directory desktop-dirname t))
+
+    (defun my/project-desktop-file ()
+      "Get desktop file path for current project."
+      (when-let ((project (project-current)))
+        (let* ((project-root (project-root project))
+               ;; Create safe filename from project path
+               (project-name (replace-regexp-in-string "/" "_"
+                                                      (string-trim project-root "/")))
+               (desktop-file (expand-file-name
+                             (concat project-name ".desktop")
+                             desktop-dirname)))
+          desktop-file)))
+
+    (defun my/project-desktop-save ()
+      "Save desktop for current project."
+      (interactive)
+      (if-let ((desktop-file (my/project-desktop-file)))
+          (progn
+            (desktop-save desktop-dirname)
+            ;; Rename to project-specific name
+            (let ((default-desktop (expand-file-name ".emacs.desktop" desktop-dirname)))
+              (when (file-exists-p default-desktop)
+                (rename-file default-desktop desktop-file t)
+                (message "Saved desktop: %s" (file-name-nondirectory desktop-file)))))
+        (message "Not in a project")))
+
+    (defun my/project-desktop-read ()
+      "Load desktop for current project."
+      (interactive)
+      (if-let ((desktop-file (my/project-desktop-file)))
+          (if (file-exists-p desktop-file)
+              (progn
+                ;; Copy to default name so desktop can read it
+                (let ((default-desktop (expand-file-name ".emacs.desktop" desktop-dirname)))
+                  (copy-file desktop-file default-desktop t)
+                  (desktop-read desktop-dirname)
+                  (message "Loaded desktop: %s" (file-name-nondirectory desktop-file))))
+            (message "No saved desktop for this project"))
+        (message "Not in a project")))
+
+    (defun my/project-desktop-list ()
+      "List all saved project desktops."
+      (interactive)
+      (let ((desktops (directory-files desktop-dirname nil "\\.desktop$")))
+        (if desktops
+            (message "Saved desktops: %s" (string-join desktops ", "))
+          (message "No saved desktops")))))
+
   (setq scroll-step           1
         scroll-conservatively 10000)
   (xterm-mouse-mode 1)

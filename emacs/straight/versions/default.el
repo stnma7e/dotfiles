@@ -23,7 +23,6 @@
  ("evil-collection" . "163792a823bcdb2dae7ac1bba4018adfac35dca2")
  ("evil-visualstar" . "06c053d8f7381f91c53311b1234872ca96ced752")
  ("external-completion" . "f4bba19e1bdda6c3c5910b9c95041d155c8654af")
- ("flymake" . "9b9e9eccd83643428e735ef1fb7b07ddfb10f0d6")
  ("general.el" . "a48768f85a655fe77b5f45c2880b420da1b1b9c3")
  ("gnu-elpa-mirror" . "ea027634bef47539058e14d3cf9e081cd64abbfc")
  ("go-mode.el" . "0ed3c5227e7f622589f1411b4939c3ee34711ebd")
@@ -43,7 +42,6 @@
  ("nongnu-elpa" . "e34e708c5adbd71f9d7abe138a62947ccae23eb2")
  ("orderless" . "fb338f771f1693436da0472a8a4d230b28af14f3")
  ("posframe" . "d93828bf6c36383c365bd564ad3bab5a4403804c")
- ("project" . "be0c22791e8e93db405a91468049b74f06458818")
  ("python-mode" . "02b92f2d903d357800a31903f69834ec54cda39b")
  ("rainbow-delimiters" . "f40ece58df8b2f0fb6c8576b527755a552a5e763")
  ("rust-mode" . "ae161dca23db7531e021205d4bee18ab8a8f3938")
@@ -54,6 +52,5 @@
  ("transient" . "1e3da7f1c26aa72b2ea76883c3d139b03ceb714a")
  ("vertico" . "a7365958439c86f5cabb9cd4bb93c0a4118eedc1")
  ("with-editor" . "902b4d572af2c2f36060da01e3c33d194cdec32b")
- ("xref" . "f2c6387a6a1b8396a4b4d877b579c4005c5ad503")
  ("zoutline" . "32857c6c4b9b0bcbed14d825a10b91a98d5fed0a"))
 :epsilon
