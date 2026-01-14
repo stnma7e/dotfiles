@@ -163,8 +163,7 @@ Ensure that package archives are available and setup package infastructure.
 
   ;; python
   (use-package python
-    ;; from Claude AI
-    :config
+    :config ;; from Claude AI
     (defun my/setup-uv-venv ()
       "Detect and activate uv virtualenv in project."
       (when-let* ((project-root (locate-dominating-file default-directory ".venv"))
@@ -178,7 +177,6 @@ Ensure that package archives are available and setup package infastructure.
     ;; Better defaults for Python shell
     (setq python-shell-completion-native-enable nil  ; Avoid warnings
           python-indent-guess-indent-offset-verbose nil))
-  (use-package python-mode)
   (defun pyformat ()
     (interactive)
     (shell-command-on-buffer-impl "pyformat"))
@@ -196,6 +194,8 @@ Ensure that package archives are available and setup package infastructure.
 #+END_SRC
 
 * Emacs display configs
+
+** General
 
 Set C-like language configuration for spacing. This includes C/C++, Java, etc.
 #+BEGIN_SRC emacs-lisp
@@ -255,7 +255,7 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
     (evil-collection-init))
 #+END_SRC
 
-**** Completion
+** Completion
 
 This section includes a couple different types of completion for Emacs.
 
@@ -270,118 +270,120 @@ previously it was provided by company.
 
 
 #+BEGIN_SRC emacs-lisp
-    ;; better fuzzy search than flex (whole word matching)
-    (use-package hotfuzz
-      :config
-      (setq completion-styles '(hotfuzz))
-      (setq completion-ignore-case t)
-      (setq read-file-name-completion-ignore-case t)
-      (setq read-buffer-completion-ignore-case t))
-    ;; even better fuzzy search that matches on multiple partial word queries at once
-    (use-package orderless
-      :after hotfuzz
-      :config
-      (setq completion-styles '(hotfuzz orderless)))
-    (use-package vertico
-      :after orderless
-      :init
-      (vertico-mode))
+  ;; better fuzzy search than flex (whole word matching)
+  (use-package hotfuzz
+    :config
+    (setq completion-styles '(hotfuzz))
+    (setq completion-ignore-case t)
+    (setq read-file-name-completion-ignore-case t)
+    (setq read-buffer-completion-ignore-case t))
+  ;; even better fuzzy search that matches on multiple partial word queries at once
+  (use-package orderless
+    :after hotfuzz
+    :config
+    (setq completion-styles '(hotfuzz orderless)))
+  (use-package vertico
+    :after orderless
+    :init
+    (vertico-mode))
 
-    ;; Enable rich vertico annotations using the Marginalia package
-    (use-package marginalia
-      ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
-      ;; available in the *Completions* buffer, add it to the
-      ;; `completion-list-mode-map'.
-      :bind (:map minibuffer-local-map
-             ("M-A" . marginalia-cycle))
-      :init
-      (marginalia-mode))
+  ;; Enable rich vertico annotations using the Marginalia package
+  (use-package marginalia
+    ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+    ;; available in the *Completions* buffer, add it to the
+    ;; `completion-list-mode-map'.
+    :bind (:map minibuffer-local-map
+           ("M-A" . marginalia-cycle))
+    :init
+    (marginalia-mode))
 
-    (use-package consult
-      :bind (
-             ("C-x b" . consult-buffer)            ; orig. switch-to-buffer
-             ("C-s" . consult-line)
-             ;; Minibuffer history
-             :map minibuffer-local-map
-             ("M-s" . consult-history)             ;; orig. next-matching-history-element
-             ("M-r" . consult-history))            ;; orig. previous-matching-history-element
+  (use-package consult
+    :bind (
+           ("C-x b" . consult-buffer)            ; orig. switch-to-buffer
+           ("C-s" . consult-line)
+           ;; Minibuffer history
+           :map minibuffer-local-map
+           ("M-s" . consult-history)             ;; orig. next-matching-history-element
+           ("M-r" . consult-history))            ;; orig. previous-matching-history-element
 
-      ;; Enable automatic preview at point in the *Completions* buffer. This is
-      ;; relevant when you use the default completion UI.
-      :hook (completion-list-mode . consult-preview-at-point-mode)
+    ;; Enable automatic preview at point in the *Completions* buffer. This is
+    ;; relevant when you use the default completion UI.
+    :hook (completion-list-mode . consult-preview-at-point-mode)
 
-      ;; The :init configuration is always executed (Not lazy)
-      :init
-      ;; Use Consult to select xref locations with preview
-      (setq xref-show-xrefs-function #'consult-xref
-            xref-show-definitions-function #'consult-xref)
-    )
+    ;; The :init configuration is always executed (Not lazy)
+    :init
+    ;; Use Consult to select xref locations with preview
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)
+  )
 
-    ;; in-buffer completion (think vscode code completion)
-    (use-package corfu)
+  ;; in-buffer completion (think vscode code completion)
+  (use-package corfu
+    :init
+    (global-corfu-mode))
 
-    ;; Persist history over Emacs restarts. Vertico sorts by history position.
-    (use-package savehist
-      :init
-      (savehist-mode))
+  ;; Persist history over Emacs restarts. Vertico sorts by history position.
+  (use-package savehist
+    :init
+    (savehist-mode))
 
-    ;; Persist recently opened files over Emacs restarts. Used by consult-recent-file.
-    (use-package recentf
-      :config
-      (recentf-mode 1)
-      (setq recentf-max-saved-items 200
-            recentf-max-menu-items 20)
-      ;; Exclude some paths from recent files
-      (add-to-list 'recentf-exclude "/tmp/")
-      (add-to-list 'recentf-exclude "/ssh:")
-      (add-to-list 'recentf-exclude "~/.emacs.d/straight/")
-      ;; Save the recent files list periodically
-      (run-at-time nil (* 5 60) 'recentf-save-list)  ; Save every 5 minutes
-    )
+  ;; Persist recently opened files over Emacs restarts. Used by consult-recent-file.
+  (use-package recentf
+    :config
+    (recentf-mode 1)
+    (setq recentf-max-saved-items 200
+          recentf-max-menu-items 20)
+    ;; Exclude some paths from recent files
+    (add-to-list 'recentf-exclude "/tmp/")
+    (add-to-list 'recentf-exclude "/ssh:")
+    (add-to-list 'recentf-exclude "~/.emacs.d/straight/")
+    ;; Save the recent files list periodically
+    (run-at-time nil (* 5 60) 'recentf-save-list)  ; Save every 5 minutes
+  )
 
-    ;; A few more useful configurations...
-    (use-package emacs
-      :init
-      ;; Add prompt indicator to `completing-read-multiple'.
-      ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
-      (defun crm-indicator (args)
-        (cons (format "[CRM%s] %s"
-                      (replace-regexp-in-string
-                       "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                       crm-separator)
-                      (car args))
-              (cdr args)))
-      (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+  ;; A few more useful configurations...
+  (use-package emacs
+    :init
+    ;; Add prompt indicator to `completing-read-multiple'.
+    ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+    (defun crm-indicator (args)
+      (cons (format "[CRM%s] %s"
+                    (replace-regexp-in-string
+                     "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                     crm-separator)
+                    (car args))
+            (cdr args)))
+    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
-      ;; Do not allow the cursor in the minibuffer prompt
-      (setq minibuffer-prompt-properties
-            '(read-only t cursor-intangible t face minibuffer-prompt))
-      (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+    ;; Do not allow the cursor in the minibuffer prompt
+    (setq minibuffer-prompt-properties
+          '(read-only t cursor-intangible t face minibuffer-prompt))
+    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-      ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-      ;; Vertico commands are hidden in normal buffers.
-      (setq read-extended-command-predicate
-            #'command-completion-default-include-p)
+    ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+    ;; Vertico commands are hidden in normal buffers.
+    (setq read-extended-command-predicate
+          #'command-completion-default-include-p)
 
-      ;; Enable recursive minibuffers
-      (setq enable-recursive-minibuffers t))
+    ;; Enable recursive minibuffers
+    (setq enable-recursive-minibuffers t))
 
-    (use-package eglot
-      :config
-      (add-hook 'go-mode-hook 'eglot-ensure))
+  (use-package eglot
+    :config
+    (add-hook 'go-mode-hook 'eglot-ensure))
 
-    (use-package which-key
-      :init
-      (setq-default which-key-idle-delay 0.25)
-      :config
-      ;; Lower which-key latency
-      (which-key-mode 1))
+  (use-package which-key
+    :init
+    (setq-default which-key-idle-delay 0.25)
+    :config
+    ;; Lower which-key latency
+    (which-key-mode 1))
 
-    ;; Ensure that filenames are unique and retain information about their directory.
-    (require 'uniquify)
-    (setq uniquify-buffer-name-style 'forward
-          uniquify-after-kill-buffer-p t ; rename after killing
-          )
+  ;; Ensure that filenames are unique and retain information about their directory.
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward
+        uniquify-after-kill-buffer-p t ; rename after killing
+  )
 #+END_SRC
 
 * Utilities
