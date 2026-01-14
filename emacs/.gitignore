@@ -5,6 +5,8 @@ projects
 url/
 .lsp-session*
 
+desktops/
+
 # Straight.el - ignore everything except lockfile
 straight/repos/
 straight/build/

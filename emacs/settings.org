@@ -534,6 +534,9 @@ previously it was provided by company.
        "p f"  'project-find-file
        "p b"  'project-switch-to-buffer
        "p r"  'project-query-replace-regexp
+       "p s"  'my/project-desktop-save
+       "p l"  'my/project-desktop-read
+       "p L"  'my/project-desktop-list
     )
     (general-define-key
        :states '(insert normal global)
