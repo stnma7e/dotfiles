@@ -46,7 +46,7 @@ Ensure that package archives are available and setup package infastructure.
 
 #+BEGIN_SRC emacs-lisp
   (setq scroll-step           1
-	scroll-conservatively 10000)
+        scroll-conservatively 10000)
   (xterm-mouse-mode 1)
 
   (menu-bar-mode -1) ; turn off file menu
@@ -54,10 +54,10 @@ Ensure that package archives are available and setup package infastructure.
   (scroll-bar-mode -1)
   (setq-default indent-tabs-mode t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (electric-pair-mode) ; match parentheses when typing
 
   ;; store all backup and autosave files in the tmp dir
-  (setq backup-directory-alist
-	`(("." . ,temporary-file-directory)))
+  (setq backup-directory-alist `(("." . ,temporary-file-directory)))
 
   ;; Line numbers
   (setq-default display-line-numbers-type 'relative)
@@ -261,6 +261,20 @@ previously it was provided by company.
     (use-package savehist
       :init
       (savehist-mode))
+
+    ;; Persist recently opened files over Emacs restarts. Used by consult-recent-file.
+    (use-package recentf
+      :config
+      (recentf-mode 1)
+      (setq recentf-max-saved-items 200
+            recentf-max-menu-items 20)
+      ;; Exclude some paths from recent files
+      (add-to-list 'recentf-exclude "/tmp/")
+      (add-to-list 'recentf-exclude "/ssh:")
+      (add-to-list 'recentf-exclude "~/.emacs.d/straight/")
+      ;; Save the recent files list periodically
+      (run-at-time nil (* 5 60) 'recentf-save-list)  ; Save every 5 minutes
+    )
 
     ;; A few more useful configurations...
     (use-package emacs
