@@ -20,22 +20,15 @@ Ensure that package archives are available and setup package infastructure.
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
   (setq straight-use-package-by-default t)
-  (defun my/auto-freeze-and-stage ()
-    (interactive)
-    "Auto-freeze lockfile and stage it for commit."
-    (straight-freeze-versions)
-    (message "✓ Package versions frozen"))
   ;; Freeze on Emacs exit (safety net)
-  (add-hook 'kill-emacs-hook #'my/auto-freeze-and-stage)
+  (add-hook 'kill-emacs-hook #'straight-freeze-versions)
 
   (use-package straight
     :custom
-    ;; add project and flymake to the pseudo-packages variable so straight.el doesn't download a separate version than what eglot downloads.
+    ;; add project and flymake to the pseudo-packages variable so straight.el doesn't
+    ;; download a different version than what eglot downloads.
     (straight-built-in-pseudo-packages '(emacs nadvice python image-mode project flymake xref))
     (straight-use-package-by-default t))
-
-  ;; ensure everything is byte-compiled
-  ;(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
 
   (defun open-config()
     (interactive)
@@ -100,12 +93,17 @@ Ensure that package archives are available and setup package infastructure.
             (message "No saved desktop for this project"))
         (message "Not in a project")))
 
-    (defun my/project-desktop-list ()
-      "List all saved project desktops."
+    (defun my/project-desktop-load ()
+      "Select and load any saved project desktop with preview."
       (interactive)
-      (let ((desktops (directory-files desktop-dirname nil "\\.desktop$")))
+      (let* ((desktops (directory-files desktop-dirname nil "\\.desktop$")))
         (if desktops
-            (message "Saved desktops: %s" (string-join desktops ", "))
+            (let* ((choice (completing-read "Load desktop: " desktops nil t))
+                   (desktop-file (expand-file-name choice desktop-dirname))
+                   (default-desktop (expand-file-name ".emacs.desktop" desktop-dirname)))
+              (copy-file desktop-file default-desktop t)
+              (desktop-read desktop-dirname)
+              (message "Loaded desktop: %s" choice))
           (message "No saved desktops")))))
 
   (setq scroll-step           1
@@ -540,8 +538,8 @@ previously it was provided by company.
        "p b"  'project-switch-to-buffer
        "p r"  'project-query-replace-regexp
        "p s"  'my/project-desktop-save
-       "p l"  'my/project-desktop-read
-       "p L"  'my/project-desktop-list
+       "p l"  'my/project-desktop-load
+       "p L"  'my/project-desktop-read
     )
     (general-define-key
        :states '(insert normal global)
