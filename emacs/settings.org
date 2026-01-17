@@ -132,6 +132,8 @@ Ensure that package archives are available and setup package infastructure.
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit)
+  (use-package jj-mode
+    :straight (:host github :repo "bolivier/jj-mode.el"))
   (use-package transient)
   (use-package format-all)
 

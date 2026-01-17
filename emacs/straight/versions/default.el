@@ -34,6 +34,7 @@
  ("hydra" . "59a2a45a35027948476d1d7751b0f0215b1e61aa")
  ("iedit" . "14161daa295332a49dda92b97c00d62efd38acfe")
  ("inheritenv" . "b9e67cc20c069539698a9ac54d0e6cc11e616c6f")
+ ("jj-mode.el" . "acc2589fc86292b9325a902f622ec5c518abd8f8")
  ("jsonrpc" . "d0e8381cb989122f1c7d856b9b53bba55acac103")
  ("lispy" . "fe44efd21573868638ca86fc8313241148fabbe3")
  ("llama" . "2a89ba755b0459914a44b1ffa793e57f759a5b85")
