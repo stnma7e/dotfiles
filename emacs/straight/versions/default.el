@@ -42,7 +42,6 @@
  ("nongnu-elpa" . "e34e708c5adbd71f9d7abe138a62947ccae23eb2")
  ("orderless" . "fb338f771f1693436da0472a8a4d230b28af14f3")
  ("posframe" . "d93828bf6c36383c365bd564ad3bab5a4403804c")
- ("python-mode" . "02b92f2d903d357800a31903f69834ec54cda39b")
  ("rainbow-delimiters" . "f40ece58df8b2f0fb6c8576b527755a552a5e763")
  ("rust-mode" . "ae161dca23db7531e021205d4bee18ab8a8f3938")
  ("seq" . "da86da9bf111f68fb81efd466d76d53af5aebc00")
