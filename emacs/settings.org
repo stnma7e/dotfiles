@@ -238,6 +238,7 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
 #+BEGIN_SRC emacs-lisp
   (setq evil-want-keybinding nil) ;; required by evil-collection, must be before loading evil
   (use-package undo-fu)
+  (use-package vundo)
   (use-package evil-visualstar
     :config
     (global-evil-visualstar-mode))
