@@ -36,6 +36,7 @@ alias rm='gio trash'
 alias binrm='/bin/rm -i'
 #alias time=/usr/bin/time
 alias jjs='jj show'
+alias jjss='jj show --stat'
 alias jjb='jj bookmark'
 alias jjgp='jj git push'
 
@@ -57,3 +58,4 @@ export LD_LIBRARY_PATH=/usr/local/lib/:/opt/openmm/openmm74/lib:$LD_LIBRARY_PATH
 
 command fortune -ae
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+source <(fzf --zsh)
