@@ -113,9 +113,9 @@ Ensure that package archives are available and setup package infastructure.
   (menu-bar-mode -1) ; turn off file menu
   (tool-bar-mode -1) ; turn off the save/open file/etc buttons at the top of emacs
   (scroll-bar-mode -1)
-  (setq-default indent-tabs-mode t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (electric-pair-mode) ; match parentheses when typing
+  (setq-default tab-width 4)
 
   ;; store all backup and autosave files in the tmp dir
   (setq backup-directory-alist `(("." . ,temporary-file-directory)))
@@ -205,9 +205,6 @@ Set C-like language configuration for spacing. This includes C/C++, Java, etc.
   	'(face tabs trailing space-before-tab newline indentation empty space-after-tab tab-mark missing-newline-at-eof))
   (custom-set-faces
    '(whitespace-tab ((t (:foreground "#636363" :background nil)))))
-
-  ;; Disable variable name inlays by default
-  (add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1)))
 
   ;; Set default font size
   (set-face-attribute 'default nil :height 110)
@@ -369,8 +366,12 @@ previously it was provided by company.
     (setq enable-recursive-minibuffers t))
 
   (use-package eglot
-    :config
-    :hook ((java-mode java-ts-mode go-mode rust-mode python-mode) . eglot-ensure))
+    :config (setq electric-indent-inhibit t)
+    :hook ((java-mode java-ts-mode go-mode rust-mode python-mode) . eglot-ensure)
+    :hook (before-save . eglot-format-buffer)
+    ;; Disable variable name inlays by default
+    :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1))))
+
 
   (use-package which-key
     :init
