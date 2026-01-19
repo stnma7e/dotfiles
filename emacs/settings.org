@@ -27,7 +27,7 @@ Ensure that package archives are available and setup package infastructure.
     :custom
     ;; add project and flymake to the pseudo-packages variable so straight.el doesn't
     ;; download a different version than what eglot downloads.
-    (straight-built-in-pseudo-packages '(emacs nadvice python image-mode project flymake xref))
+    (straight-built-in-pseudo-packages '(emacs nadvice python image-mode project flymake xref eglot))
     (straight-use-package-by-default t))
 
   (defun open-config()
@@ -158,7 +158,6 @@ Ensure that package archives are available and setup package infastructure.
 
   (use-package rust-mode
     :config
-    (add-hook 'rust-mode-hook 'eglot-ensure)
     (setq rust-format-on-save t))
 
   ;; python
@@ -371,7 +370,7 @@ previously it was provided by company.
 
   (use-package eglot
     :config
-    (add-hook 'go-mode-hook 'eglot-ensure))
+    :hook ((java-mode java-ts-mode go-mode rust-mode python-mode) . eglot-ensure))
 
   (use-package which-key
     :init
@@ -504,7 +503,7 @@ previously it was provided by company.
     (my/leader-keys
        ;; Buffer & File management
        "."    'find-file
-       ","    'switch-to-buffer
+       ","    'project-switch-to-buffer
        "b"    '(:ignore t :which-key "buffer")
        "b b"  'consult-buffer                     ; project buffers
        "b r"  'revert-buffer-quick                ; revert current buffer
@@ -531,6 +530,7 @@ previously it was provided by company.
        "c r"  'eglot-rename
        "c D"  'eglot-find-implementation
        "c t"  'eglot-find-typeDefinition
+       "c e"  'eglot-code-actions
 
        ;; Project utilities
        "p"    '(:ignore t :which-key "project")
