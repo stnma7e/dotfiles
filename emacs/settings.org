@@ -135,6 +135,11 @@ Ensure that package archives are available and setup package infastructure.
   (use-package transient)
   (use-package format-all)
 
+  (use-package copilot
+    :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+    :ensure t
+    :hook (prog-mode . copilot-mode))
+
   (defun indent-org-block-automatically ()
     (when (org-in-src-block-p)
       (org-edit-special)
@@ -515,6 +520,7 @@ previously it was provided by company.
        "i"    'consult-imenu                      ; navigate code structure
        "y"    'consult-yank-pop                   ; browse kill ring
        ";"    'consult-complex-command            ; command history
+       "m"    'magit
 
        ;; Search & Navigation
        "/"    'consult-line                       ; search current buffer
@@ -532,6 +538,7 @@ previously it was provided by company.
        "c D"  'eglot-find-implementation
        "c t"  'eglot-find-typeDefinition
        "c e"  'eglot-code-actions
+       "c c"  'copilot-accept-completion
 
        ;; Project utilities
        "p"    '(:ignore t :which-key "project")
