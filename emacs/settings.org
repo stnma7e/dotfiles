@@ -115,6 +115,7 @@ Ensure that package archives are available and setup package infastructure.
   (scroll-bar-mode -1)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (electric-pair-mode) ; match parentheses when typing
+  (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
 
   ;; store all backup and autosave files in the tmp dir
@@ -371,12 +372,22 @@ previously it was provided by company.
     (setq enable-recursive-minibuffers t))
 
   (use-package eglot
-    :config (setq electric-indent-inhibit t)
+    :config
+    (add-to-list 'eglot-server-programs
+                 `(java-mode . ("jdtls"
+                                :initializationOptions
+                                (:settings
+                                 (:java
+                                  (:format
+                                   (:enabled t
+                                    :settings
+                                    (:url ,(concat "file://" (expand-file-name "eclipse-java-google-style.xml" user-emacs-directory))
+                                     :profile "GoogleStyle"))))))))
+    (setq electric-indent-inhibit t)
     :hook ((java-mode java-ts-mode go-mode rust-mode python-mode) . eglot-ensure)
     :hook (before-save . eglot-format-buffer)
     ;; Disable variable name inlays by default
     :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1))))
-
 
   (use-package which-key
     :init
