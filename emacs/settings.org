@@ -196,6 +196,9 @@ Ensure that package archives are available and setup package infastructure.
         (define-key map (kbd "C-c C-c") 'code-cells-eval)
         ;; Overriding other minor mode bindings requires some insistence...
         (define-key map [remap jupyter-eval-line-or-region] 'code-cells-eval)))
+
+  (add-to-list 'auto-mode-alist '("\\.ts\\'"  . typescript-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 #+END_SRC
 
 * Emacs display configs
@@ -322,6 +325,10 @@ previously it was provided by company.
 
   ;; in-buffer completion (think vscode code completion)
   (use-package corfu
+    :custom
+    (corfu-auto t)             ; Enable auto completion
+    (corfu-auto-prefix 2)      ; Minimum length of prefix for auto completion (adjust as needed)
+    (corfu-auto-delay 0.1)     ; Delay in seconds before the popup appears (adjust as needed)
     :init
     (global-corfu-mode))
 
