@@ -477,9 +477,41 @@ previously it was provided by company.
    (defun shell-command-on-buffer ()
      (interactive)
      (shell-command-on-buffer-impl (read-shell-command "Shell command on buffer: ")))
- #+END_SRC
+#+END_SRC
 
- * Themes
+* Time Tracking
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my/daily-log-dir "~/logs/")
+
+  (defun my/daily-log-file ()
+    (expand-file-name
+     (format-time-string "%Y-%m-%d.org")
+     my/daily-log-dir))
+
+  (defun my/daily-log-open ()
+    (interactive)
+    (find-file (my/daily-log-file)))
+
+  (defun my/daily-log-breadcrumb (text)
+    (interactive "sNote: ")
+    (with-current-buffer (find-file-noselect (my/daily-log-file))
+      (goto-char (point-max))
+      (unless (search-backward "* Breadcrumbs" nil t)
+        (goto-char (point-max))
+        (insert "\n* Breadcrumbs\n"))
+      (goto-char (point-max))
+      (search-backward "* Breadcrumbs" nil t)
+      (next-line)
+      (newline)
+      (previous-line)
+      (insert (format "%s — %s"
+                      (format-time-string "%H:%M")
+                      text))
+      (save-buffer)))
+#+END_SRC
+
+* Themes
 
 #+BEGIN_SRC emacs-lisp
   (use-package color-theme-sanityinc-tomorrow)
@@ -566,20 +598,23 @@ previously it was provided by company.
        "p s"  'my/project-desktop-save
        "p l"  'my/project-desktop-load
        "p L"  'my/project-desktop-read
+
+       "l b"  'my/daily-log-breadcrumb
+       "l o"  'my/daily-log-open
     )
     (general-define-key
        :states '(insert normal global)
        ;; override prefixes that I commonly mistype
-       "C-x C-o" 'other-window
-       "C-x C-k" 'kill-buffer
-       "C-x C-b" 'switch-to-buffer
-       "C-x C-z" nil ; prevent accidentally pressing this sequence from freezing emacs over CRD
+       "C-x C-o"  'other-window
+       "C-x C-k"  'kill-buffer
+       "C-x C-b"  'switch-to-buffer
+       "C-x C-z"   nil ; prevent accidentally pressing this sequence from freezing emacs over CRD
 
        ;; scroll view without moving point
-       "M-<up>" 'scroll-up-line
+       "M-<up>"   'scroll-up-line
        "M-<down>" 'scroll-down-line
 
-       "C-/" 'comment-line
+       "C-/"      'comment-line
     )
   )
 #+END_SRC
