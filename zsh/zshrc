@@ -38,13 +38,19 @@ alias jjs='jj show'
 alias jjss='jj show --stat'
 alias jjb='jj bookmark'
 alias jjgp='jj git push'
+alias jjc='jj commit'
+alias jjcm='jj commit -m'
+alias jjd='jj diff'
+alias jjtp='jj tug && jj git push'
+alias jje='jj edit'
+alias jjn='jj new'
+alias jja='jj abandon'
 
 export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 export PATH=~/.cargo/bin:$PATH
 export PATH=~/.usr/bin:$PATH
 export PATH=~/.usr/local/bin:$PATH
 export PATH=/opt/matlab/bin:$PATH
-export PATH=~/.usr/npm/bin:$PATH
 export PATH=~/go/bin:$PATH
 
 export LIBGL_DEBUG=verbose
@@ -54,6 +60,9 @@ export RUST_BACKTRACE=t
 export MOZ_USE_XINPUT2=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 export LD_LIBRARY_PATH=/usr/local/lib/:/opt/openmm/openmm74/lib:$LD_LIBRARY_PATH
+
+source /usr/share/nvm/init-nvm.sh
+nvm use node
 
 command fortune -ae
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
