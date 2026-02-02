@@ -27,7 +27,6 @@ antigen apply
 
 source ${HOME}/.zsh/cb.sh
 
-export TERM=xterm-256color
 export SSH_AUTH_SOCK=0
 
 alias ls='ls -Fsbh --color=always'
@@ -42,7 +41,7 @@ alias jjgp='jj git push'
 
 export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 export PATH=~/.cargo/bin:$PATH
-export PATH=$PATH:~/.usr/bin
+export PATH=~/.usr/bin:$PATH
 export PATH=~/.usr/local/bin:$PATH
 export PATH=/opt/matlab/bin:$PATH
 export PATH=~/.usr/npm/bin:$PATH
