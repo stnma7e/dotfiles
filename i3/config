@@ -37,6 +37,9 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioPrev        exec --no-startup-id playerctl previous
+bindsym XF86AudioPlay        exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext        exec --no-startup-id playerctl next
 
 # brightness
 bindsym XF86MonBrightnessUp   exec brightnessctl set 50+
@@ -170,6 +173,10 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
+# turn off external monitor
+bindsym $mod+Shift+z exec "wlr-randr --output eDP-1 --on --output HDMI-A-2 --off"
+bindsym $mod+Shift+x exec "wlr-randr --output eDP-1 --off --output HDMI-A-2 --on"
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -234,3 +241,4 @@ smart_borders on
 exec dunst
 exec wl-paste -t text --watch clipman store --no-persist --max-items=25
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec rclone mount gdrive: /home/sam/drive "--vfs-cache-mode=full"
