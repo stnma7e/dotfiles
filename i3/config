@@ -131,7 +131,7 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 set $ws11 "11"
-set $ws12 "12"
+set $ws12 "12: s"
 
 # switch to workspace
 bindsym $mod+1     workspace number $ws1
@@ -208,19 +208,19 @@ bindsym $mod+r mode "resize"
         #status_command i3status
 #}
 #bindsym $mod+m bar mode toggle
-bar {
-    position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while echo $(battery_percent)% \($(battery_percent 1)% $(battery_percent 2)%\)  \| $(date +'%Y-%m-%d %I:%M:%S %p'); do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
-}
+#bar {
+#    position top
+#
+#    # When the status_command prints a new line to stdout, swaybar updates.
+#    # The default just shows the current date and time.
+#    status_command while echo $(battery_percent)% \($(battery_percent 1)% $(battery_percent 2)%\)  \| $(date +'%Y-%m-%d %I:%M:%S %p'); do sleep 1; done
+#
+#    colors {
+#        statusline #ffffff
+#        background #323232
+#        inactive_workspace #32323200 #32323200 #5c5c5c
+#    }
+#}
 
 include /etc/sway/config.d/*
 
@@ -242,3 +242,6 @@ exec dunst
 exec wl-paste -t text --watch clipman store --no-persist --max-items=25
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 exec rclone mount gdrive: /home/sam/drive "--vfs-cache-mode=full"
+exec gammastep
+exec playerctld
+exec waybar

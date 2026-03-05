@@ -1,0 +1,21 @@
+[user]
+name = "Sam Delmerico"
+email = "svdelmerico@gmail.com"
+
+[ui]
+editor = "vim"
+default-command = "log"
+pager = ":builtin"
+
+[revset-aliases]
+'closest_bookmark(to)' = 'heads(::to & bookmarks())'
+
+[aliases]
+tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
+
+[ui.streampager]
+interface = "quit-if-one-page"
+
+[fix.tools.gofmt]
+command = ["/usr/bin/gofmt"]
+patterns = ["glob:'**/*.go'"]

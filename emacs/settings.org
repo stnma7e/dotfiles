@@ -120,6 +120,10 @@ Ensure that package archives are available and setup package infastructure.
 
   ;; store all backup and autosave files in the tmp dir
   (setq backup-directory-alist `(("." . ,temporary-file-directory)))
+  (defvar autosave-dir (expand-file-name "~/.emacs.d/autosaves/"))
+  (make-directory autosave-dir t)
+  (setq auto-save-file-name-transforms
+        `((".*" ,(concat autosave-dir "\\1") t)))
 
   ;; Line numbers
   (setq-default display-line-numbers-type 'relative)
@@ -304,6 +308,8 @@ previously it was provided by company.
     (marginalia-mode))
 
   (use-package consult
+    :config
+    (setq consult-narrow-key "<")
     :bind (
            ("C-x b" . consult-buffer)            ; orig. switch-to-buffer
            ("C-s" . consult-line)
@@ -395,6 +401,10 @@ previously it was provided by company.
     :hook (before-save . eglot-format-buffer)
     ;; Disable variable name inlays by default
     :hook (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode -1))))
+  (use-package editorconfig
+    :ensure t
+    :config
+    (editorconfig-mode 1))
 
   (use-package which-key
     :init
