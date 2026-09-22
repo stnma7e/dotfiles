@@ -125,6 +125,11 @@ on-window-detected = [
     alt-r = 'mode resize'
 
     alt-shift-q = "close"
+    alt-z = 'exec-and-forget sketchybar --bar hidden=toggle'
+    alt-x       = 'exec-and-forget SwitchAudioSource -s "MacBook Pro Speakers" -t output'
+    alt-shift-x = 'exec-and-forget SwitchAudioSource -s "Fosi Audio BT30D PRO" -t output'
+    alt-c       = 'exec-and-forget SwitchAudioSource -s "FM3" -t output'
+
 
 [mode.resize.binding]
     h = 'resize width -50'

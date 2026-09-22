@@ -5,7 +5,7 @@ antigen use oh-my-zsh
 #antigen theme juanghurtado
 #antigen theme mortalscumbag
 #antigen theme trapd00r
-antigen theme sunrise
+#antigen theme sunrise
 #antigen theme bureau
 
 antigen bundle git
@@ -20,7 +20,6 @@ antigen bundle popstas/zsh-command-time
 ZSH_COMMAND_TIME_COLOR="cyan"
 
 antigen apply
-
 #
 # Customize to your needs...
 #
@@ -30,9 +29,8 @@ source ${HOME}/.zsh/cb.sh
 export SSH_AUTH_SOCK=0
 
 alias ls='ls -Fsbh --color=always'
-#alias rm='rm -i'
-alias rm='gio trash'
-alias binrm='/bin/rm -i'
+alias rm='rm -i'
+alias fdfind='command fd'
 #alias time=/usr/bin/time
 alias jjs='jj show'
 alias jjss='jj show --stat'
@@ -45,10 +43,16 @@ alias jjtp='jj tug && jj git push'
 alias jje='jj edit'
 alias jjn='jj new'
 alias jja='jj abandon'
+alias jjr='jj rebase'
+jjm() {
+    jj new main "$1" -m "Merge branch '$1' into main"
+    jj new
+}
 
 export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 export PATH=~/.cargo/bin:$PATH
 export PATH=~/.usr/bin:$PATH
+export PATH=~/.local/bin:$PATH
 export PATH=~/.usr/local/bin:$PATH
 export PATH=/opt/matlab/bin:$PATH
 export PATH=~/go/bin:$PATH
@@ -61,9 +65,19 @@ export MOZ_USE_XINPUT2=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 export LD_LIBRARY_PATH=/usr/local/lib/:/opt/openmm/openmm74/lib:$LD_LIBRARY_PATH
 
-source /usr/share/nvm/init-nvm.sh
+## NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 nvm use node
 
-command fortune -ae
+command fortune -e
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
 source <(fzf --zsh)
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/sam/.lmstudio/bin"
+# End of LM Studio CLI section
+

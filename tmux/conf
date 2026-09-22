@@ -5,6 +5,7 @@ set -g @plugin 'nhdaly/tmux-better-mouse-mode'
 set -g @plugin 'tmux-plugins/tmux-yank'
 #set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'nhdaly/tmux-better-mouse-mode'
 ###
 
 unbind C-a
@@ -17,10 +18,13 @@ set -g default-terminal "xterm-256color"
 set -g status-bg blue
 set -g status-fg white
 
-set-option -g history-limit 100000
+set-option -g history-limit 1000000
 
-set-option -g mouse on
+set -g mouse on
 bind -n WheelUpPane copy-mode
+bind -n WheelDownPane copy-mode
+bind -T copy-mode-vi WheelUpPane select-pane \; send-keys -X -N 1 scroll-up
+bind -T copy-mode-vi WheelDownPane select-pane \; send-keys -X -N 1 scroll-down
 
 set -g @continuum-restore 'on'
 
